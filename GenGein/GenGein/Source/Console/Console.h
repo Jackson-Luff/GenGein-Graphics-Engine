@@ -1,10 +1,17 @@
 #pragma once
-
 #include <glm\fwd.hpp>
 
 class Console
 {
 public:
+
+	enum TEXT_COLOUR
+	{
+		LOG_SUCCESS = 0x0A,
+		LOG_WARNING = 0x0E,
+		LOG_ERROR	= 0x0C,
+	};
+
 	// Print Primitive Types
 	static void PrintText(const char*);
 	static void PrintFloat(float, const char* = "");
@@ -19,4 +26,7 @@ public:
 	static void PrintMatrix3x3(glm::mat3, const char* = "");
 	static void PrintMatrix4x4(glm::mat4, const char* = "");
 
+	// Logs
+	// #TODO: log into file
+	static void Log(const char*, const char* = "");
 };

@@ -1,5 +1,6 @@
 #include <glm\gtx\rotate_vector.hpp>
 #include "Input\Input.h"
+#include "Console\Console.h"
 #include "FlyCam.h"
 
 using Input::Keyboard;

@@ -1,7 +1,9 @@
-#include <string>
-#include <gl_core_4_4.h>
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb\stb_image.h>
+#include <string>
+#include <glm\glm.hpp>
+
+#include "Core\GL\gl_core_4_4.h"
 #include "Skybox.h"
 
 SkyBox::SkyBox()

@@ -1,5 +1,5 @@
 #include <vld.h>
-#include "TesterOfBaseApp.h"
+#include "../Projects/Test/TesterOfBaseApp.h"
 
 int main(int argc, char** argv[])
 {

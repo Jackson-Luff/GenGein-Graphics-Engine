@@ -3,16 +3,16 @@
 #include "Time.h"
 
 Time::Time() :
-	m_deltaTime(0.0),
-	m_elapsedTime(0.001),
-	m_prevTime(0.0),
-	m_deltaTimeType(DT_DYNAMIC)
+m_deltaTime(0.0),
+m_elapsedTime(0.001),
+m_prevTime(0.0),
+m_deltaTimeType(DT_DYNAMIC)
 {}
 
 Time::Time(const DeltaTimeID a_presetDeltaTime) :
-	m_deltaTime(0.0),
-	m_elapsedTime(0.001),
-	m_prevTime(0.0)
+m_deltaTime(0.0),
+m_elapsedTime(0.001),
+m_prevTime(0.0)
 {
 	m_deltaTimeType = a_presetDeltaTime;
 	m_deltaTime = a_presetDeltaTime;

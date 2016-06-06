@@ -190,49 +190,52 @@
       <AdditionalLibraryDirectories>$(SolutionDir)Deps\GLFW\lib13;$(SolutionDir)Deps\FBXLoader\lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="Source\Console\Console.h" />
-    <ClInclude Include="Source\Core\GL\ShaderHandle.h" />
-    <ClInclude Include="Source\Core\GL\Shader.h" />
-    <ClInclude Include="Source\Core\gl_core_4_4.h" />
-    <ClInclude Include="Source\Render\Material\Material.h" />
-    <ClInclude Include="Source\Render\GL\GLProgram.h" />
-    <ClInclude Include="Source\Render\GL\GLShader.h" />
-    <ClInclude Include="Source\Input\Cameras\FlyCam.h" />
-    <ClInclude Include="Source\Input\Cameras\BaseCam.h" />
-    <ClInclude Include="Source\Maths\GenGeinMaths.h" />
-    <ClInclude Include="Source\Render\Gizmos.h" />
-    <ClInclude Include="Source\Render\GL\GLWindow.h" />
-    <ClInclude Include="Source\Input\Input.h" />
-    <ClInclude Include="Source\Core\BaseApp.h" />
-    <ClInclude Include="Source\Core\Time.h" />
-    <ClInclude Include="Source\Render\SkyBox.h" />
-    <ClInclude Include="Source\TesterOfBaseApp.h" />
+    <ItemGroup>
+		<ClInclude Include="Source\Core\BaseApp.h" />
+		<ClInclude Include="Source\Core\Time.h" />
+		<ClInclude Include="Source\Input\Cameras\BaseCam.h" />
+		<ClInclude Include="Source\Maths\GenGeinMaths.h" />
+		<ClInclude Include="Source\Input\Cameras\FlyCam.h" />
+		<ClInclude Include="Source\Render\Material\Material.h" />
+		<ClInclude Include="Source\Render\GL\GLProgram.h" />
+		<ClInclude Include="Source\Render\GL\GLShader.h" />
+		<ClInclude Include="Source\Render\GL\GLWindow.h" />
+		<ClInclude Include="Source\Render\SkyBox.h" />
+		<ClInclude Include="Source\Input\Input.h" />
+		<ClInclude Include="Source\Console\Console.h" />
+		<ClInclude Include="Projects\Test\TesterOfBaseApp.h" />
+		<ClInclude Include="Source\Render\Objects\BaseObject.h" />
+		<ClInclude Include="Source\Render\Objects\GenMesh.h" />
+		<ClInclude Include="Source\Render\UniBuff.h" />
+		<ClInclude Include="Source\Core\GL\gl_core_4_4.h" />
+		<ClInclude Include="Source\Core\Shaders\Shader.h" />
+		<ClInclude Include="Source\Core\Shaders\SProgram.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Console\Console.cpp" />
-    <ClCompile Include="Source\Core\GL\ShaderHandle.cpp" />
-    <ClCompile Include="Source\Core\GL\Shader.cpp" />
-    <ClCompile Include="Source\Core\gl_core_4_4.cpp" />
-    <ClCompile Include="Source\Render\Material\Material.cpp" />
-    <ClCompile Include="Source\Render\GL\GLProgram.cpp" />
-    <ClCompile Include="Source\Render\GL\GLShader.cpp" />
-    <ClCompile Include="Source\Input\Cameras\FlyCam.cpp" />
-    <ClCompile Include="Source\Maths\Mat2x2.cpp" />
-    <ClCompile Include="Source\Maths\Mat3x3.cpp" />
-    <ClCompile Include="Source\Maths\Mat4x4.cpp" />
-    <ClCompile Include="Source\Input\Cameras\BaseCam.cpp" />
-    <ClCompile Include="Source\main.cpp" />
-    <ClCompile Include="Source\Render\Gizmos.cpp" />
-    <ClCompile Include="Source\Render\GL\GLWindow.cpp" />
-    <ClCompile Include="Source\Input\Input.cpp" />
-    <ClCompile Include="Source\Core\BaseApp.cpp" />
-    <ClCompile Include="Source\Core\Time.cpp" />
-    <ClCompile Include="Source\Render\SkyBox.cpp" />
-    <ClCompile Include="Source\TesterOfBaseApp.cpp" />
-    <ClCompile Include="Source\Maths\Vec2.cpp" />
-    <ClCompile Include="Source\Maths\Vec3.cpp" />
-    <ClCompile Include="Source\Maths\Vec4.cpp" />
+		<ClCompile Include="Source\Core\BaseApp.cpp" />
+		<ClCompile Include="Source\Core\Time.cpp" />
+		<ClCompile Include="Source\Core\GL\gl_core_4_4.cpp" />
+		<ClCompile Include="Source\Core\Shaders\Shader.cpp" />
+		<ClCompile Include="Source\Core\Shaders\SProgram.cpp" />
+		<ClCompile Include="Source\main.cpp" />
+		<ClCompile Include="Source\Input\Cameras\BaseCam.cpp" />
+		<ClCompile Include="Source\Input\Cameras\FlyCam.cpp" />
+		<ClCompile Include="Source\Maths\Mat4x4.cpp" />
+		<ClCompile Include="Source\Maths\Mat3x3.cpp" />
+		<ClCompile Include="Source\Maths\Mat2x2.cpp" />
+		<ClCompile Include="Source\Maths\Vec2.cpp" />
+		<ClCompile Include="Source\Maths\Vec3.cpp" />
+		<ClCompile Include="Source\Maths\Vec4.cpp" />
+		<ClCompile Include="Source\Render\GL\GLProgram.cpp" />
+		<ClCompile Include="Source\Render\GL\GLShader.cpp" />
+		<ClCompile Include="Source\Render\GL\GLWindow.cpp" />
+		<ClCompile Include="Source\Render\SkyBox.cpp" />
+		<ClCompile Include="Source\Render\Objects\GenMesh.cpp" />
+		<ClCompile Include="Source\Render\Objects\BaseObject.cpp" />
+		<ClCompile Include="Source\Render\UniBuff.cpp" />
+		<ClCompile Include="Source\Input\Input.cpp" />
+		<ClCompile Include="Source\Console\Console.cpp" />
+		<ClCompile Include="Projects\Test\TesterOfBaseApp.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

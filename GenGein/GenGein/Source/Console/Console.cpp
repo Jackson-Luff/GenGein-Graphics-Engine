@@ -1,20 +1,27 @@
+#include <Windows.h>
 #include <iostream>
 #include <glm\glm.hpp>
 
 #include "Console.h"
 
+//#IDEA:
+// 'Smart Printing'
+// -> Go to memory address
+// -> get sizeof(<thing>)
+// -> print out whatever is that memory
+
 // Print Primitive Types
 void Console::PrintText(const char* a_textToPrint)
-{	
-	printf("%s\n",a_textToPrint);
+{
+	printf("%s\n", a_textToPrint);
 	return;
 }
 
 void Console::PrintFloat(float a_floatToPrint, const char* a_desc)
-{	
+{
 	printf("%s  %f\n", a_desc, a_floatToPrint);
 	return;
-}	
+}
 
 void Console::PrintInt(int a_intToPrint, const char* a_desc)
 {
@@ -49,7 +56,8 @@ void Console::PrintMatrix3x3(glm::mat3 a_mat3ToPrint, const char* a_desc)
 	{
 		for (unsigned int c = 0; c < 3; c++)
 		{
-			printf("M(%u: %f", (unsigned int)(r + c), a_mat3ToPrint[r][c]);
+			int index = (r * 4) + c;
+			printf("%s M(%u): %f", a_desc, index, a_mat3ToPrint[c][r]);
 		}
 		printf("\n");
 	}
@@ -63,9 +71,27 @@ void Console::PrintMatrix4x4(glm::mat4 a_mat4ToPrint, const char* a_desc)
 	{
 		for (unsigned int c = 0; c < 4; c++)
 		{
-			printf("M(%u): %f", (unsigned int)(r + c), a_mat4ToPrint[r][c]);
+			int index = (r * 4) + c;
+			printf("%s M(%u): %f", a_desc, index, a_mat4ToPrint[c][r]);
 		}
 		printf("\n");
 	}
 	return;
+}
+
+void Console::Log(const char* a_log, const char* a_ext)
+{
+	const char tag = a_log[1];
+	
+	HANDLE hndlOut = GetStdHandle(STD_OUTPUT_HANDLE);
+
+	if (tag == 'S')
+		SetConsoleTextAttribute(hndlOut, Console::LOG_SUCCESS);
+	else if (tag == 'W') 
+		SetConsoleTextAttribute(hndlOut, Console::LOG_WARNING);
+	else if (tag == 'E')
+		SetConsoleTextAttribute(hndlOut, Console::LOG_ERROR);
+
+	printf(a_log, a_ext);
+
 }

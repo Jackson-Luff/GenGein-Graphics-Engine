@@ -1,19 +1,25 @@
 #pragma once
 
-struct GLFWwindow; 
+struct GLFWwindow;
 
 class GLwindow
 {
 public:
+	enum MONITOR_ID
+	{
+		PRIMARY,
+		SECONDARY
+	};
+
 	GLwindow();
 	~GLwindow();
 
 	// Do before anything
-	void SetUp(const int a_width, const int a_height, const char* a_title);
+	void SetUp(const int, const int, const char*, bool = false);
 	// Clean in shutdown
 	void CleanUp();
 	// Changes window background colour
-	void SetWindowColour(const float a_R, const float a_G, const float a_B);
+	void SetWindowColour(const float, const float, const float);
 	// Cleans colour and depth buffer
 	void ClearBuffers();
 	// Do after all rendering
@@ -25,12 +31,15 @@ public:
 	// Enables/Disables VSYNC
 	void EnableVSync(bool);
 	// Enables Fullscreen
-	void EnableFullScreen(bool);
+	void EnableFullscreen(bool);
+	// Select Monitor to use
+	void SelectMonitor(MONITOR_ID);
 private:
 
-	bool InitGLWindow(const int a_width, const int a_height, const char* a_title);
+	bool InitGLWindow(const int, const int, const char*, bool);
 
 	bool m_shouldClose;
+	bool m_fullscreen;
 	GLFWwindow* m_pWindow;
 };
 

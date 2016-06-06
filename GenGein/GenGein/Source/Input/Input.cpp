@@ -1,16 +1,14 @@
 #include <GLFW\glfw3.h>
+#include <glm\glm.hpp>
 #include "Input\Cameras\BaseCam.h"
 
 #include "Input.h"
-
 
 using Input::Keyboard;
 using Input::Cursor;
 using Input::Window;
 using Input::Camera;
 using Input::Time;
-
-using namespace glm;
 
 // Keyboard
 
@@ -24,7 +22,6 @@ bool Keyboard::isKeyUp(const int a_key)
 
 bool Keyboard::isKeyDown(const int a_key)
 {
-
 	if (glfwGetKey(glfwGetCurrentContext(), (int)a_key))
 		return true;
 
@@ -104,7 +101,7 @@ glm::ivec2 Window::GetWindowSize()
 }
 
 // Camera
-//#NOTE: POSSIBLE MEM LEAK
+
 BaseCam* Camera::m_cam = new BaseCam();
 
 const glm::vec4 Camera::GetRight()

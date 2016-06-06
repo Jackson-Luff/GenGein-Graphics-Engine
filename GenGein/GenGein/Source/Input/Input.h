@@ -1,10 +1,7 @@
 #pragma once
-#include <glm\glm.hpp>
+#include <glm\fwd.hpp>
 
 class BaseCam;
-
-// GLM definitions
-//#TODO:FORWARD DECLARE GLM FOR .LIB BUILD
 
 #pragma region Key definitions
 /* The unknown key */

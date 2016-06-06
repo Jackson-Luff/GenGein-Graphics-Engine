@@ -1,4 +1,5 @@
 #pragma once
+
 class Time
 {
 public:
@@ -18,19 +19,22 @@ public:
 	virtual void Update();
 
 	inline const double& GetDeltaTime() {
-		return m_deltaTime; }
+		return m_deltaTime;
+	}
 	inline const double& GetElapsedTime() {
-		return m_elapsedTime; }
-	
+		return m_elapsedTime;
+	}
+
 	inline const DeltaTimeID& GetDTType() {
-		return m_deltaTimeType; }
+		return m_deltaTimeType;
+	}
 private:
 
 	void VariedDeltaTime();
 	void SemiFixedDeltaTime();
 	void BetterDeltaTime();
 	void BestDeltaTime();
-	
+
 	DeltaTimeID m_deltaTimeType;
 
 	double m_deltaTime;

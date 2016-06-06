@@ -32,7 +32,7 @@ public:
 	void SetWorldTrans(const glm::mat4 a_newWrldTrns);
 	
 	// Get Position
-	inline const glm::vec4 GetPosition() const { return m_worldTrans[3]; }
+	inline const glm::vec4& GetPosition() const { return m_worldTrans[3]; }
 	// Set Position
 	void SetPosition(const glm::vec4 a_position);
 
@@ -54,13 +54,13 @@ public:
 	glm::vec3 PickAgainstPlane(const glm::vec4 plane) const;
 
 	// Getter for Projection Transform
-	inline const glm::mat4 GetProjTrans()	const { return m_projTrans; }
+	inline const glm::mat4& GetProjTrans()	const { return m_projTrans; }
 
 	// Getter for View Transform
-	inline const glm::mat4 GetViewTrans()	const { return m_viewTrans; }
+	inline const glm::mat4& GetViewTrans()	const { return m_viewTrans; }
 
 	// Getter for ProjectionView Transform
-	inline const glm::mat4 GetProjViewTrans()	const { return m_projViewTrans; }
+	inline const glm::mat4& GetProjViewTrans()	const { return m_projViewTrans; }
 
 protected:
 	// Update Projection View

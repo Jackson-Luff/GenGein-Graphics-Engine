@@ -1,8 +1,7 @@
 #pragma once
-#include <array>
 #include <string>
 #include <vector>
-#include <glm\glm.hpp>
+#include <glm\fwd.hpp>
 
 class SkyBox
 {
@@ -28,7 +27,6 @@ private:
 	void LoadCubeVertices();
 	void LoadCubeTextures(const std::vector<std::string>& a_dirs);
 	
-
 	unsigned int m_vao, m_vbo;
 	unsigned int m_skyShaderID;
 	unsigned int m_cubeMapID;
