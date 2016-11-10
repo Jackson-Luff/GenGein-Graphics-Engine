@@ -12,11 +12,13 @@ Full disclaimer; this engine is for personal-use only. Bug submittions [When I m
 
 ### COMMENTING
 Generally I try to keep things pretty simple. For debugging purposes I've marked in places to remind myself what I need to do. 
+
 1. "#NOTE:" is marking a note, for whatever it shall be. (e.g optimisation/idea)
 2. "#TODO:" is marking an area in which is lacking or can be improved upon. (e.g effiective/efficiency)
 
 ### Console Logging
 When utilising Console::Log() [printf() wrap] use the following to tag the desired log
+
 1. "#WAR:" when logging a warning.
 2. "#SUC:" when logging a success.
 3. "#ERR:" when logging a error.
