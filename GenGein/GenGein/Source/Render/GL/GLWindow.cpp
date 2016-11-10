@@ -9,6 +9,7 @@ void error_callback(int a_error, const char* a_description)
 	//printf("%i  %s\n", a_error, a_description);
 }
 
+
 GLwindow::GLwindow()
 	: m_pWindow(glfwCreateWindow(800, 600, "DEFAULT_NON_ASSIGNED", 0, 0))
 {}
@@ -42,8 +43,24 @@ void GLwindow::SetWindowColour(const float a_R, const float a_G, const float a_B
 	glClearColor(a_R, a_G, a_B, 1.0f);
 }
 
+void GLwindow::AttemptWindowReSize()
+{
+	int w, h;
+	glfwGetWindowSize(m_pWindow, &w, &h);
+
+	if (m_windowWidth != w || m_windowHeight != h)
+	{
+		m_windowWidth = w;
+		m_windowHeight = h;
+		glViewport(0, 0, w, h);
+	}
+}
+
 void GLwindow::ClearBuffers()
 {
+	// Check if needing to update window size
+	AttemptWindowReSize();
+
 	// Clear colour and depth buffers
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
@@ -60,8 +77,28 @@ bool GLwindow::ShouldShutDown()
 {
 	if (glfwWindowShouldClose(m_pWindow))
 		return true;
-
 	return false;
+}
+
+void GLwindow::EnableDepthTest(bool a_enable)
+{
+	if (a_enable)
+		glEnable(GL_DEPTH_TEST);
+	else
+		glDisable(GL_DEPTH_TEST);
+
+	glDepthFunc(GL_LEQUAL);
+}
+
+void GLwindow::EnableOneMinusAlphaBlend(bool a_enable)
+{
+	if (a_enable)
+		glEnable(GL_BLEND);
+	else
+		glDisable(GL_BLEND);
+
+	glBlendEquation(GL_FUNC_ADD);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void GLwindow::EnableVSync(bool a_sync)

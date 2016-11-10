@@ -44,6 +44,8 @@ private:
 	float m_flySpeed;
 	// Rotational speed
 	float m_rotSpeed;
+	// Movement Speed Multiplier (on Zoom)
+	float m_flyMultiplier;
 	// Mouse is down boolean
 	bool m_bViewButtonClicked;
 };

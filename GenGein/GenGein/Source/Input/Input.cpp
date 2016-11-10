@@ -10,6 +10,10 @@ using Input::Window;
 using Input::Camera;
 using Input::Time;
 
+///////
+// #NOTE: 'glfwGetCurrentContext()' IS VERY EXPENSIVE. SET UP REFERENCE PLS
+///////
+
 // Keyboard
 
 bool Keyboard::isKeyUp(const int a_key)
@@ -104,6 +108,11 @@ glm::ivec2 Window::GetWindowSize()
 
 BaseCam* Camera::m_cam = new BaseCam();
 
+void Camera::DestroyCamera()
+{
+	delete Camera::m_cam;
+}
+
 const glm::vec4 Camera::GetRight()
 {
 	return m_cam->GetWorldTrans()[0];
@@ -124,7 +133,7 @@ const glm::vec4 Camera::GetCamPos()
 	return glm::vec4(m_cam->GetPosition());
 }
 
-void Camera::SetCamPos(glm::vec4 a_pos)
+void Camera::SetCamPos(const glm::vec4& a_pos)
 {
 	m_cam->SetPosition(a_pos);
 }

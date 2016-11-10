@@ -18,7 +18,7 @@ BaseCam::BaseCam()
 	m_currSpeed(0)
 {}
 
-BaseCam::BaseCam(const vec3 a_pos, const vec3 a_lkAt) 
+BaseCam::BaseCam(const vec3& a_pos, const vec3& a_lkAt) 
 	: BaseCam()
 {
 	// Set Position
@@ -32,7 +32,7 @@ BaseCam::BaseCam(const vec3 a_pos, const vec3 a_lkAt)
 	UpdateProjViewTrans();
 }
 
-BaseCam::BaseCam(const mat4 a_trans)
+BaseCam::BaseCam(const mat4& a_trans)
 {
 	// Set curr speed;
 	m_currSpeed = 0;
@@ -45,7 +45,7 @@ BaseCam::BaseCam(const mat4 a_trans)
 BaseCam::~BaseCam()
 {}
 
-void BaseCam::SetWorldTrans(const mat4 a_newWrldTrns)
+void BaseCam::SetWorldTrans(const mat4& a_newWrldTrns)
 {
 	// Set the world transform
 	m_worldTrans = a_newWrldTrns;
@@ -53,7 +53,7 @@ void BaseCam::SetWorldTrans(const mat4 a_newWrldTrns)
 	UpdateProjViewTrans();
 }
 
-void BaseCam::SetPosition(const vec4 a_pos)
+void BaseCam::SetPosition(const vec4& a_pos)
 {
 	// Set Position within world
 	m_worldTrans[3] = a_pos;
@@ -96,7 +96,7 @@ vec3 BaseCam::ScreenPosToDir(const float x, const float y)
 	return vec3(normalize(m_worldTrans * vec4(screenPos, 0)));
 }
 
-vec3 BaseCam::PickAgainstPlane(const vec4 plane) const
+vec3 BaseCam::PickAgainstPlane(const vec4& plane) const
 {
 	// Extract cursor position
 	glm::dvec2 curPos = Cursor::GetCursorPos();

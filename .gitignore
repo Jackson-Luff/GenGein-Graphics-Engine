@@ -26,5 +26,31 @@
 *.out
 *.app
 
-# Visual studio stuffs
-.vc
+# Visual Studio
+*.vc
+*.vcxproj.user
+*.VC.db
+*.VC.VC.opendb
+
+# Internal
+GenGein/.vs/
+GenGein/x86/
+GenGein/x64/
+GenGein/GenGein/Win32/
+GenGein/GenGein/x64/
+GenGein/Debug/
+GenGein/Release/
+
+# External Dependancies
+GenGein/Deps/AntTweak/
+GenGein/Deps/FBXLoader/
+GenGein/Deps/FMOD/
+GenGein/Deps/GL_CORE/
+GenGein/Deps/GLFW/
+GenGein/Deps/GLM/
+GenGein/Deps/STB/
+GenGein/Deps/tinyOBJ/
+
+# External resources
+GenGein/Data/Object/
+GenGein/Data/Textures/

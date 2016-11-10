@@ -19,8 +19,8 @@ class BaseCam
 public:
 	// Constructors
 	BaseCam();
-	BaseCam(const glm::vec3 a_position, const glm::vec3 a_lkAt);
-	BaseCam(const glm::mat4 a_transform);
+	BaseCam(const glm::vec3& a_position, const glm::vec3& a_lkAt);
+	BaseCam(const glm::mat4& a_transform);
 	// Deconstructor
 	~BaseCam();
 
@@ -29,12 +29,12 @@ public:
 
 	// Set World Position
 	glm::mat4 GetWorldTrans() { return m_worldTrans; }
-	void SetWorldTrans(const glm::mat4 a_newWrldTrns);
+	void SetWorldTrans(const glm::mat4& a_newWrldTrns);
 	
 	// Get Position
 	inline const glm::vec4& GetPosition() const { return m_worldTrans[3]; }
 	// Set Position
-	void SetPosition(const glm::vec4 a_position);
+	void SetPosition(const glm::vec4& a_position);
 
 	// Get Current Speed
 	inline const float GetBaseSpeed() const { return m_currSpeed; }
@@ -51,7 +51,7 @@ public:
 	// Sends out a ray cast from camera's direction
 	glm::vec3 ScreenPosToDir(const float x, const float y);
 	// Sends a ray out to a desired plane
-	glm::vec3 PickAgainstPlane(const glm::vec4 plane) const;
+	glm::vec3 PickAgainstPlane(const glm::vec4& plane) const;
 
 	// Getter for Projection Transform
 	inline const glm::mat4& GetProjTrans()	const { return m_projTrans; }

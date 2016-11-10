@@ -3,8 +3,9 @@
 #include "Core\BaseApp.h"
 
 class UniBuff;
-class SProgram;
-class GenMesh;
+class OCMesh;
+class SkyBox;
+class ShaderSet;
 
 // WARNING: TEMP!
 class TesterOfBaseApp : public BaseApp
@@ -20,7 +21,10 @@ public:
 
 	//void CreateIcosahedron();
 private:
-	UniBuff* m_pUniBuff;
-	SProgram* m_pTestProgram;
-	GenMesh* m_pGenMesh;
+	UniBuff* m_pCameraUniBuff;
+	OCMesh* m_pTestOBJ;
+	SkyBox* m_pSkyBox;
+	ShaderSet* m_pShader;
+	unsigned int* m_pObjectShader;
+	unsigned int* m_pSkyShader;
 };

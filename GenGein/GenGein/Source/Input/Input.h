@@ -169,16 +169,16 @@ namespace Input
 	class Camera
 	{
 	public:
-
 		static BaseCam* GetCamera() { return m_cam; }
 		static void SetCamera(BaseCam* a_newCam) { m_cam = a_newCam; }
+		static void DestroyCamera();
 
 		static const glm::vec4 GetRight();
 		static const glm::vec4 GetUp();
 		static const glm::vec4 GetForward();
 
 		static const glm::vec4 GetCamPos();
-		static void SetCamPos(const glm::vec4 a_pos);
+		static void SetCamPos(const glm::vec4& a_pos);
 
 		static const glm::mat4 GetCameraWorldTrans();
 

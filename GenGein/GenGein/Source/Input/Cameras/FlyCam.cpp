@@ -122,6 +122,7 @@ void FlyCam::HandleMouseInput(const double a_dt)
 	}
 	else
 		m_bViewButtonClicked = false;
+
 }
 
 void FlyCam::CalculateRotation(const double a_dt, const glm::dvec2 a_cursorDelta)

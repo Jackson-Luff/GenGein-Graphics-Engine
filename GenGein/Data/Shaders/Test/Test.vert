@@ -1,21 +1,32 @@
-#version 440
-
 layout(std140) uniform UniBuff
 {
 	vec4 camPosition;
-	mat4 camProjView;
+	mat4 camProj;
+	mat4 camView;
 };
 
 in layout(location=0) vec4 vertPosition;
 in layout(location=1) vec4 vertNormal;
 in layout(location=2) vec2 vertUV;
 
-out vec4 vPosition;
+out vec3 vNormals;
+out vec2 vCoords;
+
+out vec3 vLightDir;
+out vec3 vCamPos;
+
+vec3 lightPos = vec3(-20.0, -20.0, 0.0);
 
 void main()
 {
-	vec4 position = camProjView * vertPosition;
-
-	gl_Position = position;
-	vPosition = position;
+	mat4 camera = (camProj * camView);
+	vec4 p = camera * vertPosition;
+	gl_Position = p;
+	
+	vNormals = vertNormal.xyz;
+	vCoords = vertUV;
+	
+	// Diffuse lighting
+	vLightDir = normalize(lightPos - vertPosition.xyz);
+	vCamPos = camPosition.xyz;
 }

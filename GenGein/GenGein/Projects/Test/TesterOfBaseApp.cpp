@@ -1,10 +1,14 @@
+#include "gl_core_4_4.h"
 #include <glm\glm.hpp>
-#include "Core\Shaders\SProgram.h"
+
 #include "Core\Time.h"	
 #include "Console\Console.h"
 #include "Input\Cameras\FlyCam.h"
-#include "Render\Objects\GenMesh.h"
-#include "Render\UniBuff.h"
+#include "Render\Shaders\ShaderSet.h"
+#include "Render\Objects\Components\OCMesh.h"
+#include "Render\UniformBuffers\UniBuff.h"
+#include "Render\SkyBox.h"
+
 
 #include "TesterOfBaseApp.h"
 
@@ -14,88 +18,52 @@ TesterOfBaseApp::TesterOfBaseApp()
 }
 
 TesterOfBaseApp::~TesterOfBaseApp()
-{}
-
-/*
-void TesterOfBaseApp::CreateIcosahedron()
 {
-	const int Faces[] = {
-		2, 1, 0,
-		3, 2, 0,
-		4, 3, 0,
-		5, 4, 0,
-		1, 5, 0,
-		11, 6, 7,
-		11, 7, 8,
-		11, 8, 9,
-		11, 9, 10,
-		11, 10, 6,
-		1, 2, 6,
-		2, 3, 7,
-		3, 4, 8,
-		4, 5, 9,
-		5, 1, 10,
-		2, 7, 6,
-		3, 8, 7,
-		4, 9, 8,
-		5, 10, 9,
-		1, 6, 10 };
-
-	const glm::vec3 vertices[] = {
-		{ glm::vec3(0.000f, 0.000f, 1.000f) },
-		{ glm::vec3(0.894f, 0.000f, 0.447f) },
-		{ glm::vec3(0.276f, 0.851f, 0.447f) },
-		{ glm::vec3(-0.724f, 0.526f, 0.447f) },
-		{ glm::vec3(-0.724f, -0.526f, 0.447f) },
-		{ glm::vec3(0.276f, -0.851f, 0.447f) },
-		{ glm::vec3(0.724f, 0.526f, -0.447f) },
-		{ glm::vec3(-0.276f, 0.851f, -0.447f) },
-		{ glm::vec3(-0.894f, 0.000f, -0.447f) },
-		{ glm::vec3(-0.276f, -0.851f, -0.447f) },
-		{ glm::vec3(0.724f, -0.526f, -0.447f) },
-		{ glm::vec3(0.000f, 0.000f, -1.000f) }
-	};
-
-	m_indexCount = sizeof(Faces) / sizeof(Faces[0]);
-
-	// Create the VAO:
-	GLuint vao;
-	glGenVertexArrays(1, &vao);
-	glBindVertexArray(vao);
-
-	// Create the VBO for positions:
-	GLuint vboPos;
-	glGenBuffers(1, &vboPos);
-	glBindBuffer(GL_ARRAY_BUFFER, vboPos);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
-
-	// Create the VBO for indices:
-	GLuint indices;
-	glGenBuffers(1, &indices);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Faces), Faces, GL_STATIC_DRAW);
+	delete m_pShader;
+	delete m_pCameraUniBuff;
+	delete m_pTestOBJ;
+	delete m_pSkyBox;
 }
-*/
 
 void TesterOfBaseApp::StartUp(const int a_width, const int a_height, const char* a_title, bool a_fullscreen)
 {
+	////////////// SET UP BaseApp Prerequisites////////////////////////////////////
+	// 
 	BaseApp::StartUp(a_width, a_height, a_title, a_fullscreen);
 
-	m_pTestProgram = new SProgram("TESTIE");
-	m_pTestProgram->AttachShadersFromDir("Data/Shaders/Test/", "Test");
-	m_pTestProgram->CompositeProgram();
-
 	//Initialise camera
-	FlyCam* pFlyCam = new FlyCam(glm::vec3(10), glm::vec3(0), 2, 0.5f);
+	FlyCam* pFlyCam = new FlyCam(glm::vec3(10, 0, 05), glm::vec3(0), 0.25, 0.2f);
 	m_pBaseCam = pFlyCam;
+	//
+	///////////////////////////////////////////////////////////////////////////////
+	
+	m_pShader = new ShaderSet();
+	m_pObjectShader = m_pShader->AddProgramFromExts({
+		"Data/Shaders/Test/Test.vert",
+		"Data/Shaders/Test/Test.frag"
+	});
+	m_pSkyShader = m_pShader->AddProgramFromExts({
+		"Data/Shaders/Skybox/Skybox.vert",
+		"Data/Shaders/Skybox/Skybox.frag"
+	});
 
-	m_pUniBuff = new UniBuff(m_pTestProgram->GetID());
-	m_pUniBuff->SetUp(m_pBaseCam->GetPosition(), m_pBaseCam->GetProjViewTrans());
+	// Set version of shaders
+	m_pShader->SetVersion("450");
+	//Set preamble to program AFTER 'version' definition m
+	m_pShader->SetPreambleFile("Data/Shaders/preamble.glsl");
+	m_pShader->UpdatePrograms();
 
-	m_pGenMesh = new GenMesh();
-	m_pGenMesh->GenSegmentedGrid(100, 3.0f, false);
+	// 
+	m_pSkyBox = new SkyBox(m_pSkyShader);
+	m_pSkyBox->Create(SkyBox::SkyType::SKY);
+
+	m_pCameraUniBuff = new UniBuff();
+	m_pCameraUniBuff->SetUp(m_pBaseCam->GetPosition(), m_pBaseCam->GetProjTrans(), m_pBaseCam->GetViewTrans());
+
+	// no normals == no mesh #TODO: CalcNormals() if none
+	m_pTestOBJ = new OCMesh(*m_pObjectShader);
+	m_pTestOBJ->Load("Data/Objects/toilet.obj","Data/Objects/");
+
 }
 
 void TesterOfBaseApp::ShutDown()
@@ -105,13 +73,18 @@ void TesterOfBaseApp::ShutDown()
 
 void TesterOfBaseApp::Update(const double a_dt)
 {
-	m_pUniBuff->Update();
+	// Update GPU with Camera Updates:
+	m_pCameraUniBuff->Update();
 }
 
 void TesterOfBaseApp::Render()
 {
-	m_pTestProgram->UseProgram();
-	
-	m_pGenMesh->Render();
+	// set up internal update (only update every x seconds)
+	m_pShader->UpdatePrograms();
 
+	glUseProgram(*m_pSkyShader);
+	m_pSkyBox->Render();
+
+	glUseProgram(*m_pObjectShader);
+	m_pTestOBJ->Render();
 }	

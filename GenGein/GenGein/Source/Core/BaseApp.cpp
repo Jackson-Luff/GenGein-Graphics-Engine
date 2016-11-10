@@ -4,7 +4,7 @@
 #include "Input\Cameras\BaseCam.h"
 #include "Console\Console.h"
 #include "Render\GL\GLWindow.h"
-#include "Render\UniBuff.h"
+#include "Render\UniformBuffers\UniBuff.h"
 #include "Core\Time.h"
 
 #include "BaseApp.h"
@@ -15,6 +15,8 @@ BaseApp::BaseApp()
 
 BaseApp::~BaseApp()
 {
+	Input::Camera::DestroyCamera();
+
 	delete m_pTime;
 	delete m_pGLWindow;
 	delete m_pBaseCam;
@@ -28,6 +30,8 @@ void BaseApp::StartUp(const int a_width, const int a_height, const char* a_title
 	m_pGLWindow->SetUp(a_width, a_height, a_title, a_fullscreen);
 	m_pGLWindow->SetWindowColour(0.2f, 0.65f, 0.75f);
 	m_pGLWindow->EnableVSync(false);
+	m_pGLWindow->EnableDepthTest(true);
+	m_pGLWindow->EnableOneMinusAlphaBlend(true);
 }
 
 void BaseApp::ShutDown()
@@ -59,7 +63,7 @@ void BaseApp::Run()
 	{
 		double dt = m_pTime->GetDeltaTime();
 
-		// Update:
+		// Update Debug Controls:
 		Input::Keyboard::RunDebugControls();
 		// Update delta time
 		m_pTime->Update();

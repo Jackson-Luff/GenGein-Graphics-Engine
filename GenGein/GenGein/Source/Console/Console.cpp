@@ -10,9 +10,12 @@
 // -> get sizeof(<thing>)
 // -> print out whatever is that memory
 
+const HANDLE hndl = GetStdHandle(STD_OUTPUT_HANDLE);
+
 // Print Primitive Types
 void Console::PrintText(const char* a_textToPrint)
 {
+	SetConsoleTextAttribute(hndl, Console::LOG_DEFAULT);
 	printf("%s\n", a_textToPrint);
 	return;
 }
@@ -30,26 +33,26 @@ void Console::PrintInt(int a_intToPrint, const char* a_desc)
 }
 
 // Print Vectors
-void Console::PrintVector2(glm::vec2 a_vec2ToPrint, const char* a_desc)
+void Console::PrintVector2(glm::vec2& a_vec2ToPrint, const char* a_desc)
 {
 	printf("%s  X: %f, Y: %f\n", a_desc, a_vec2ToPrint.x, a_vec2ToPrint.y);
 	return;
 }
 
-void Console::PrintVector3(glm::vec3 a_vec3ToPrint, const char* a_desc)
+void Console::PrintVector3(glm::vec3& a_vec3ToPrint, const char* a_desc)
 {
 	printf("%s  X: %f, Y: %f, Z: %f\n", a_desc, a_vec3ToPrint.x, a_vec3ToPrint.y, a_vec3ToPrint.z);
 	return;
 }
 
-void Console::PrintVector4(glm::vec4 a_vec4ToPrint, const char* a_desc)
+void Console::PrintVector4(glm::vec4& a_vec4ToPrint, const char* a_desc)
 {
 	printf("%s  X: %f, Y: %f, Z: %f, W: %f\n", a_desc, a_vec4ToPrint.x, a_vec4ToPrint.y, a_vec4ToPrint.z, a_vec4ToPrint.w);
 	return;
 }
 
 // Print Matrices
-void Console::PrintMatrix3x3(glm::mat3 a_mat3ToPrint, const char* a_desc)
+void Console::PrintMatrix3x3(glm::mat3& a_mat3ToPrint, const char* a_desc)
 {
 	//#NOTE: slightly inefficient as printf is called 12 times
 	for (unsigned int r = 0; r < 3; r++)
@@ -64,7 +67,7 @@ void Console::PrintMatrix3x3(glm::mat3 a_mat3ToPrint, const char* a_desc)
 	return;
 }
 
-void Console::PrintMatrix4x4(glm::mat4 a_mat4ToPrint, const char* a_desc)
+void Console::PrintMatrix4x4(glm::mat4& a_mat4ToPrint, const char* a_desc)
 {
 	//#NOTE: slightly inefficient as printf is called 20 times
 	for (unsigned int r = 0; r < 4; r++)
@@ -83,15 +86,18 @@ void Console::Log(const char* a_log, const char* a_ext)
 {
 	const char tag = a_log[1];
 	
-	HANDLE hndlOut = GetStdHandle(STD_OUTPUT_HANDLE);
-
-	if (tag == 'S')
-		SetConsoleTextAttribute(hndlOut, Console::LOG_SUCCESS);
-	else if (tag == 'W') 
-		SetConsoleTextAttribute(hndlOut, Console::LOG_WARNING);
-	else if (tag == 'E')
-		SetConsoleTextAttribute(hndlOut, Console::LOG_ERROR);
+	switch(tag)
+	{
+	case 'S':
+		SetConsoleTextAttribute(hndl, Console::LOG_SUCCESS);	break;
+	case 'E':
+		SetConsoleTextAttribute(hndl, Console::LOG_ERROR);		break;
+	case 'W':
+		SetConsoleTextAttribute(hndl, Console::LOG_WARNING);	break;
+	default:
+		SetConsoleTextAttribute(hndl, Console::LOG_DEFAULT);	break;
+	}
 
 	printf(a_log, a_ext);
-
+	SetConsoleTextAttribute(hndl, Console::LOG_DEFAULT);
 }

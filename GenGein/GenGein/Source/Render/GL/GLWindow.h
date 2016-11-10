@@ -14,12 +14,14 @@ public:
 	GLwindow();
 	~GLwindow();
 
-	// Do before anything
+	// Setup window  <width, height, name, fullscreen>
 	void SetUp(const int, const int, const char*, bool = false);
 	// Clean in shutdown
 	void CleanUp();
-	// Changes window background colour
+	// Changes window background colour <r,g,b> range 0-1
 	void SetWindowColour(const float, const float, const float);
+	// Attempts to re-size window if window has been scaled
+	void AttemptWindowReSize();
 	// Cleans colour and depth buffer
 	void ClearBuffers();
 	// Do after all rendering
@@ -27,7 +29,10 @@ public:
 	// Consults GLFW for should close
 	bool ShouldShutDown();
 
-
+	// Enable Depth Testing
+	void EnableDepthTest(bool a_enable);
+	// Transparent handle
+	void EnableOneMinusAlphaBlend(bool a_enable);
 	// Enables/Disables VSYNC
 	void EnableVSync(bool);
 	// Enables Fullscreen
@@ -40,6 +45,8 @@ private:
 
 	bool m_shouldClose;
 	bool m_fullscreen;
+	int m_windowWidth, m_windowHeight;
+
 	GLFWwindow* m_pWindow;
 };
 
