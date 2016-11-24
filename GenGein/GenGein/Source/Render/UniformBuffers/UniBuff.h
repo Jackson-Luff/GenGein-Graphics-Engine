@@ -1,5 +1,5 @@
 #pragma once
-#include <glm\fwd.hpp>
+#include <glm\glm.hpp>
 
 class UniBuff
 {
@@ -13,7 +13,7 @@ public:
 	void Update();
 
 private:
-	
+
 	// TODO: Improve data usage/storage
 	// - Remove copy and update GPU mem with pointers
 	struct POINTERS_TO_DATA
@@ -30,8 +30,6 @@ private:
 		glm::mat4 camView;
 	} m_unibuffstorage;
 
-	unsigned int m_programID;
 	unsigned int m_UBO;
 	unsigned int m_blockIndex;
-
 };

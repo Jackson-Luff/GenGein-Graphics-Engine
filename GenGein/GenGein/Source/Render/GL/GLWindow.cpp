@@ -1,7 +1,9 @@
 #include <Core\GL\gl_core_4_4.h>
 #include <GLFW\glfw3.h>
-#include "Console\Console.h"
+#include "Input\Console\Console.h"
 #include "GLwindow.h"
+
+using C_LOG_TYPE = Console::LOG_TYPE;
 
 void error_callback(int a_error, const char* a_description)
 {
@@ -15,16 +17,14 @@ GLwindow::GLwindow()
 {}
 
 GLwindow::~GLwindow()
-{
-
-}
+{}
 
 void GLwindow::SetUp(const int a_width, const int a_height, const char* a_title, bool a_fullscreen)
 {
 	if (InitGLWindow(a_width, a_height, a_title, a_fullscreen))
-		Console::Log("#SUC | Window Build Complete!\n");
+		Console::Log(C_LOG_TYPE::LOG_SUCCESS, "Window Build Complete!\n");
 	else
-		return Console::Log("#ERR | Window Build Failed!\n");
+		return Console::Log(C_LOG_TYPE::LOG_ERROR, "Window Build Failed!\n");
 }
 
 void GLwindow::CleanUp()
@@ -38,7 +38,7 @@ void GLwindow::SetWindowColour(const float a_R, const float a_G, const float a_B
 	if ((a_R < 0 || a_R > 1) ||
 		(a_G < 0 || a_G > 1) ||
 		(a_B < 0 || a_B > 1))
-		Console::Log("#WAR | window colour exceeds GL units.\n");
+		Console::Log(C_LOG_TYPE::LOG_WARNING, "window colour exceeds GL units.\n");
 
 	glClearColor(a_R, a_G, a_B, 1.0f);
 }
@@ -103,24 +103,15 @@ void GLwindow::EnableOneMinusAlphaBlend(bool a_enable)
 
 void GLwindow::EnableVSync(bool a_sync)
 {
-	// Function pointer for the wgl extention function we need to enable/disable
-	// vsync
-	typedef BOOL(APIENTRY *PFNWGLSWAPINTERVALPROC)(int);
-	PFNWGLSWAPINTERVALPROC wglSwapIntervalEXT = 0;
-
-	const char *extensions = (char*)glGetString(GL_EXTENSIONS);
-
-	if (strstr(extensions, "WGL_EXT_swap_control") == 0)
-	{
-		return;
-	}
-	else
-	{
-		wglSwapIntervalEXT = (PFNWGLSWAPINTERVALPROC)wglGetProcAddress("wglSwapIntervalEXT");
-
-		if (wglSwapIntervalEXT)
-			wglSwapIntervalEXT(a_sync);
-	}
+#ifdef _WIN32
+	// Turn on vertical screen sync under Windows.
+	// (I.e. it uses the WGL_EXT_swap_control extension)
+	typedef BOOL(WINAPI *PFNWGLSWAPINTERVALEXTPROC)(int interval);
+	PFNWGLSWAPINTERVALEXTPROC wglSwapIntervalEXT = NULL;
+	wglSwapIntervalEXT = (PFNWGLSWAPINTERVALEXTPROC)wglGetProcAddress("wglSwapIntervalEXT");
+	if (wglSwapIntervalEXT)
+		wglSwapIntervalEXT(!a_sync);
+#endif
 }
 
 void GLwindow::EnableFullscreen(bool a_fullscreen)

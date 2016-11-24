@@ -16,7 +16,9 @@
 #include <cstdio>
 #include <algorithm>
 
-#include "Console\Console.h"
+#include "Input\Console\Console.h"
+
+using C_LOG_TYPE = Console::LOG_TYPE;
 
 static uint64_t GetShaderFileTimestamp(const char* filename)
 {
@@ -49,9 +51,9 @@ static uint64_t GetShaderFileTimestamp(const char* filename)
 		{ 
 			int err = GetLastError();
 			if (err == ERROR_FILE_NOT_FOUND)
-				Console::Log("#ERR | File not found: \n", filename);
+				Console::Log(C_LOG_TYPE::LOG_ERROR, "File not found: \n", filename);
 			else if (err == ERROR_PATH_NOT_FOUND)
-				Console::Log("#ERR | Path is invalid: \n", filename);
+				Console::Log(C_LOG_TYPE::LOG_ERROR, "Path is invalid: \n", filename);
 			
 		}
 	}
@@ -210,8 +212,8 @@ void ShaderSet::UpdatePrograms()
 			for (size_t found_source; (found_source = log_s.find(source_hash)) != std::string::npos;) {
 				log_s.replace(found_source, source_hash.size(), shader->first.Name);
 			}
-			Console::Log("#ERR | Error compiling %s, \n", shader->first.Name.c_str());
-			Console::Log("#ERR | Log: %s, \n", log_s.c_str());
+			Console::Log(C_LOG_TYPE::LOG_ERROR, "Error compiling %s, \n", shader->first.Name.c_str());
+			Console::Log(C_LOG_TYPE::LOG_ERROR, "Log: %s, \n", log_s.c_str());
 		}
 	}
 
@@ -278,10 +280,13 @@ void ShaderSet::UpdatePrograms()
 			glGetProgramiv(program.second.InternalHandle, GL_LINK_STATUS, &status);
 
 			std::string msg;
+			C_LOG_TYPE log_type;
 			if (!status)
-				msg = "#ERR | Linking program (";
+				log_type = C_LOG_TYPE::LOG_ERROR;
 			else
-				msg = "#SUCC | Linking program (";
+				log_type = C_LOG_TYPE::LOG_SUCCESS;
+
+			msg = "Linking program (";
 
 			for (const ShaderNameTypePair* shader : program.first)
 			{
@@ -298,7 +303,7 @@ void ShaderSet::UpdatePrograms()
 			if (log[0] != '\0')
 				msg.append(log_s + "\n");
 
-			Console::Log(msg.c_str(), "\n");
+			Console::Log(log_type, msg.c_str(), "\n");
 			
 			if (!status)
 				program.second.PublicHandle = 0;

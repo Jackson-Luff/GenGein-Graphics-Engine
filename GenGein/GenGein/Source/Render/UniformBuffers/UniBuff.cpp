@@ -35,7 +35,7 @@ void UniBuff::CleanUp()
 void UniBuff::Update()
 {
 	if (m_unibuffstorage.camPosition != *m_dataPointers.camPosition ||
-		m_unibuffstorage.camProj != *m_dataPointers.camProj			||
+		m_unibuffstorage.camProj != *m_dataPointers.camProj ||
 		m_unibuffstorage.camView != *m_dataPointers.camView)
 	{
 		m_unibuffstorage.camPosition = *m_dataPointers.camPosition;
@@ -50,6 +50,6 @@ void UniBuff::Update()
 		//#TODO: Allow multiple shader programs -- std::vector<programs> foreach
 		unsigned int bindingPoint = 0;
 		glBindBufferBase(GL_UNIFORM_BUFFER, bindingPoint, m_UBO);
-		glUniformBlockBinding(m_programID, m_blockIndex, bindingPoint);
+		//glUniformBlockBinding(*m_programID, m_blockIndex, bindingPoint);
 	}
 }

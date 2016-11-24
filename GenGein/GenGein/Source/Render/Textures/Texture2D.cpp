@@ -1,9 +1,10 @@
 #include <gl_core_4_4.h>
 #include <stb\stb_image.h>
 
-#include "Console\Console.h"
+#include "Input\Console\Console.h"
 #include "Texture2D.h"
 
+using C_LOG_TYPE = Console::LOG_TYPE;
 
 Texture2D::Texture2D()
 	: m_name("\0"), m_GLTexture(0), m_GLSlot(0), m_UniformLocation(0)
@@ -25,10 +26,12 @@ void Texture2D::Setup(std::string a_directory, unsigned int a_gl_textureSlot)
 	m_GLSlot = a_gl_textureSlot;
 
 	int imgWidth = 0, imgHeight = 0, imgFormat = 0;
-	unsigned char* data = stbi_load(a_directory.c_str(), &imgWidth, &imgHeight, &imgFormat, STBI_default);
+	const char* path = a_directory.c_str();
+
+	unsigned char* data = stbi_load(path, &imgWidth, &imgHeight, &imgFormat, STBI_default);
 
 	if (data == NULL)
-		return Console::Log("#ERR | Cannot find texture %s.\n", m_name.c_str());
+		return Console::Log(C_LOG_TYPE::LOG_WARNING, "Missing texture at: %s\n", path);
 
 	imgFormat == 1 ? imgFormat = GL_RED  :
 	imgFormat == 2 ? imgFormat = GL_RG   :
@@ -46,7 +49,7 @@ void Texture2D::Setup(std::string a_directory, unsigned int a_gl_textureSlot)
 
 	stbi_image_free(data);
 
-	Console::Log("#SUC | %s Texture Loaded.\n", m_name.c_str());
+	Console::Log(C_LOG_TYPE::LOG_SUCCESS, "%s Texture Loaded.\n", m_name.c_str());
 }
 
 void Texture2D::Shutdown()

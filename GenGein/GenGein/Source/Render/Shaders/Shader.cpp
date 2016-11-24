@@ -2,13 +2,15 @@
 #include <fstream>
 
 #include "Core\GL\gl_core_4_4.h"
-#include "Console\Console.h"
+#include "Input\Console\Console.h"
 
 #include "Shader.h"
 
 //#NOTE: Should probably remove
 // 'ExtractFromFile' function and 
 // make a 'File' class to handle that
+
+using C_LOG_TYPE = Console::LOG_TYPE;
 
 Shader::Shader()
 	: m_shaderType(),
@@ -45,7 +47,7 @@ bool Shader::Load(std::string a_shaderPath, ShaderType a_shaderType)
 bool Shader::AttachToProgram(unsigned int a_program)
 {
 	if (m_shaderID != -1)
-		Console::Log("#SUC | %s VALID SHADER, ATTACH SUCCESSFUL\n", m_directory.c_str());
+		Console::Log(C_LOG_TYPE::LOG_SUCCESS, "%s VALID SHADER, ATTACH SUCCESSFUL\n", m_directory.c_str());
 	else
 		return false;
 
@@ -82,7 +84,7 @@ bool Shader::CheckShaderStatus(unsigned int a_shader)
 
 		// Print out the log
 		glGetShaderInfoLog(a_shader, infoLogLength, 0, infoLog);
-		Console::Log("#ERR | Failed to link shader!\n%s\n", infoLog);
+		Console::Log(C_LOG_TYPE::LOG_ERROR, "Failed to link shader!\n%s\n", infoLog);
 		delete[] infoLog;
 		return false;
 	}
@@ -104,11 +106,11 @@ bool Shader::CreateShader(std::string a_src, ShaderType a_shaderType)
 
 	if (!CheckShaderStatus(sID))
 	{
-		Console::Log("#ERR | SHADER DIRECTORY %s IS INVALID\n", m_directory.c_str());
+		Console::Log(C_LOG_TYPE::LOG_ERROR, "SHADER DIRECTORY %s IS INVALID\n", m_directory.c_str());
 		return false;
 	}
 	else
-		Console::Log("#SUC | SHADER INITIALISED %s\n", m_directory.c_str());
+		Console::Log(C_LOG_TYPE::LOG_SUCCESS, "SHADER INITIALISED %s\n", m_directory.c_str());
 	
 	m_shaderID = sID;
 
@@ -124,7 +126,7 @@ std::string Shader::ExtractFromFile(std::string a_filePath)
 	// Grab the shader source
 	if (!src)
 	{
-		Console::Log("#ERR | COULD NOT READ FILE AT %s FILE NON-EXISTENT\n", a_filePath.c_str());
+		Console::Log(C_LOG_TYPE::LOG_ERROR, "COULD NOT READ FILE AT %s FILE NON-EXISTENT\n", a_filePath.c_str());
 		return std::string();
 	}
 	

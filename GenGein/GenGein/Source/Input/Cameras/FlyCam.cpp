@@ -1,31 +1,32 @@
 #include <glm\gtx\rotate_vector.hpp>
 #include "Input\Input.h"
-#include "Console\Console.h"
+#include "Input\Console\Console.h"
 #include "FlyCam.h"
 
 using Input::Keyboard;
 using Input::Cursor;
 using Input::Window;
 
+using glm::ivec2;
+using glm::dvec2;
 using glm::vec3;
 using glm::vec4;
 using glm::mat3;
 using glm::mat4;
 
-
 FlyCam::FlyCam() :
-m_flySpeed(0),
 m_rotSpeed(0),
+m_flyVelocity(vec3(0)),
 m_bViewButtonClicked(false)
 {}
 
 FlyCam::FlyCam(const vec3 a_pos, const vec3 a_lkAt,
-	const float a_flySpeed, const float a_rotSpeed) 
-	: BaseCam(a_pos, a_lkAt)
+	const float a_flySpeed, const float a_rotSpeed) : BaseCam(a_pos, a_lkAt)
 {
-	m_flySpeed = a_flySpeed;
+	SetBaseSpeed(a_flySpeed);
 	m_rotSpeed = a_rotSpeed;
-	SetBaseSpeed(m_flySpeed);
+	m_flyVelocity = vec3(0.0f);
+	
 
 	// Initialise data
 	m_bViewButtonClicked = false;
@@ -49,44 +50,48 @@ void FlyCam::HandleKeyboardInput(const double a_dt)
 	vec3 vRight	= vec3(m_worldTrans[0]);
 	vec3 vUp	= vec3(m_worldTrans[1]);
 	vec3 vFrwrd	= vec3(m_worldTrans[2]);
-
-	vec3 moveDir(0.0f);
+	
+	vec3 moveDir = vec3(0.0);
 
 	//Retain a direction via with button is pressed
 	if (Keyboard::isKeyDown(KEY_W))
 		moveDir -= vFrwrd;
-	else if (Keyboard::isKeyDown(KEY_S))
+	if (Keyboard::isKeyDown(KEY_S))
 		moveDir += vFrwrd;
-	else if (Keyboard::isKeyDown(KEY_A))
+	if (Keyboard::isKeyDown(KEY_A))
 		moveDir -= vRight;
-	else if (Keyboard::isKeyDown(KEY_D))
+	if (Keyboard::isKeyDown(KEY_D))
 		moveDir += vRight;
 	
 	if (Keyboard::isKeyDown(KEY_E))
 		moveDir += vec3(0.0f, 1.0f, 0.0f);
 	else if (Keyboard::isKeyDown(KEY_Q))
 		moveDir -= vec3(0.0f, 1.0f, 0.0f);
+	
+	if (length(moveDir) > 0.0f)
+		m_flyVelocity += moveDir;
 
-	m_flySpeed = GetBaseSpeed();
+	if (length(m_flyVelocity) > 0.0f)
+	{		
+		m_flyVelocity *= 0.99f;
 
-	float vel = 10.0f;
-	float maxSpeed = 25.0f;
+		if (length(m_flyVelocity) > 7.5f)
+			m_flyVelocity = 7.5f * normalize(m_flyVelocity);
 
-	// Applying speed boosts
-	if (Keyboard::isKeyDown(KEY_LEFT_SHIFT))
-		SetFlySpeed(vel * m_flySpeed);
-	else if (m_flySpeed >= maxSpeed)
-		SetFlySpeed(m_flySpeed * 0.98f);
-
-	if (m_flySpeed <= 0.1f)
-		SetFlySpeed(0.0f);
-
-	//Apply movement to the current position
-	if (length(moveDir) > 0.01f)
-	{
-		moveDir = ((float)a_dt * m_flySpeed) * normalize(moveDir);
-		SetPosition(GetPosition() + vec4(moveDir, 0.0));
+		// Update apply velocity and speed relative to movement
+		const float hyperSpeed = 2.0f;
+		const float velStr = ((float)a_dt * m_currSpeed);
+		
+		// If(Left_Shift) HYYYPPPPEEERRRSPEEEDD BOISSS
+		if (Keyboard::isKeyDown(KEY_LEFT_SHIFT))
+			m_flyVelocity *= hyperSpeed;
+				
+		// Update render capture
+		SetPosition(GetPosition() + vec4(m_flyVelocity * velStr, 0.0));
+		UpdateProjViewTrans();
 	}
+	
+
 }
 
 void FlyCam::HandleMouseInput(const double a_dt)
@@ -97,8 +102,8 @@ void FlyCam::HandleMouseInput(const double a_dt)
 		// Check for held down
 		if (m_bViewButtonClicked == false)
 		{
-			glm::ivec2 winSize = Window::GetWindowSize();
-			glm::dvec2 screenCenter = glm::dvec2(winSize.x, winSize.y) / 2.0;
+			ivec2 winSize = Window::GetWindowSize();
+			dvec2 screenCenter = dvec2(winSize.x, winSize.y) / 2.0;
 
 			Cursor::SetOldCursorPos(screenCenter);
 			Cursor::SetCursorPos(screenCenter);
@@ -108,10 +113,10 @@ void FlyCam::HandleMouseInput(const double a_dt)
 		else
 		{
 			// Retrieve current mouse position
-			glm::dvec2 newCurPos = Cursor::GetCursorPos();
+			dvec2 newCurPos = Cursor::GetCursorPos();
 
 			//Calculate delta between new and old mouse position
-			glm::dvec2 delta = newCurPos - Cursor::GetOldCursorPos();
+			dvec2 delta = newCurPos - Cursor::GetOldCursorPos();
 
 			// Save off previous cursor position
 			Cursor::SetOldCursorPos(newCurPos);
@@ -125,7 +130,7 @@ void FlyCam::HandleMouseInput(const double a_dt)
 
 }
 
-void FlyCam::CalculateRotation(const double a_dt, const glm::dvec2 a_cursorDelta)
+void FlyCam::CalculateRotation(const double a_dt, const dvec2 a_cursorDelta)
 {
 	// Calculate the rotation of the delta vector
 	mat3 xRot = mat3(rotate((float)(a_cursorDelta.x * (a_dt * -m_rotSpeed)), vec3(0, 1, 0)));
@@ -148,5 +153,5 @@ void FlyCam::CalculateRotation(const double a_dt, const glm::dvec2 a_cursorDelta
 	m_worldTrans[1] = vec4(-m_upVector, 0);
 	m_worldTrans[2] = normalize(m_worldTrans[2]);
 	// Apply View Transform 
-	m_viewTrans = glm::inverse(m_worldTrans);
+	m_viewTrans = inverse(m_worldTrans);
 }

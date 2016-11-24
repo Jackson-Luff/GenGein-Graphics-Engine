@@ -5,22 +5,24 @@
 
 #include "Core\GL\gl_core_4_4.h"
 
-#include "Console\Console.h"
+#include "Input\Console\Console.h"
 #include "Render\Shaders\ShaderSet.h"
 #include "Render\Objects\Components\Shape.h"
 #include "Render\Textures\TextureCube.h"
 
 #include "Skybox.h"
 
+using C_LOG_TYPE = Console::LOG_TYPE;
+
 std::vector<std::string> GetSmartDirectories(const SkyBox::SkyType a_presetType)
 {
-	std::string skyDir;
+	std::string skyDir = "_Resources/Textures/SkyBoxes";
 	std::string fileType = ".jpg";
 	std::string names[6]
 	{
-		"posx", "negx",
-		"posy", "negy",
 		"posz", "negz",
+		"posy", "negy",
+		"posx", "negx",
 	};
 
 	//Setup Sea Directory
@@ -28,16 +30,23 @@ std::vector<std::string> GetSmartDirectories(const SkyBox::SkyType a_presetType)
 	{
 		break;
 	case SkyBox::SkyType::SKY:
-		skyDir = "Data/Textures/SkyBoxes/Sky/";
+		skyDir.append("/Sky/");		
 		break;
 	case SkyBox::SkyType::SPACE:
-		skyDir = "Data/Textures/SkyBoxes/Space/";
+		skyDir.append("/Space/");		
 		break;
 	case SkyBox::SkyType::CHAPEL:
-		skyDir = "Data/Textures/SkyBoxes/Chapel/";
+		skyDir.append("/Chapel/");		
+		break;
+	case SkyBox::SkyType::GOLDRUSH:
+		skyDir.append("/GoldRush/");	
+		fileType = ".tga";
+	case SkyBox::SkyType::FROZEN:
+		skyDir.append("/Frozen/");
+		fileType = ".tga";
 		break;
 	default:
-		Console::Log("#ERR | No such directory %s.\n", skyDir.c_str());
+		Console::Log(C_LOG_TYPE::LOG_ERROR, "No such directory %s.\n", skyDir.c_str());
 		break;
 	}
 
@@ -59,6 +68,7 @@ SkyBox::SkyBox(const unsigned int* a_program)
 
 SkyBox::~SkyBox()
 {
+	glDeleteProgram(*m_pSkyShader);
 	delete m_pShape;
 	delete m_pTextureCube;
 }
@@ -73,13 +83,14 @@ void SkyBox::Create(const SkyType a_presetType)
 	m_pTextureCube = new TextureCube(m_pSkyShader, "SkyBox");
 	m_pTextureCube->AddUniqueTextures(directories, GL_TEXTURE0);
 
-	Console::Log("#SUCC | Skybox Loaded Successfully. \n");
+	Console::Log(C_LOG_TYPE::LOG_SUCCESS, "Skybox Loaded Successfully. \n");
 }
 
 void SkyBox::Render()
 {
 	glDepthMask(GL_FALSE);
 	
+	glUseProgram(*m_pSkyShader);
 	m_pTextureCube->Render();
 	m_pShape->Render();
 

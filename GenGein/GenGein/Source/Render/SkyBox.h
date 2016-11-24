@@ -11,11 +11,13 @@ class SkyBox
 {
 public:
 
-	enum class SkyType 
+	enum class SkyType : char
 	{
 		SKY,
 		SPACE,
 		CHAPEL,
+		GOLDRUSH,
+		FROZEN,
 		SIZE
 	};
 

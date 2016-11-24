@@ -26,13 +26,6 @@ public:
 	// Overridden update
 	virtual void Update(const double a_dt) override;
 	
-	// Get the fly speed
-	inline const float GetFlySpeed() const
-		{ return m_flySpeed; }
-	// Set the fly speed
-	inline void SetFlySpeed(const float a_fSpeed)
-		{ m_flySpeed = a_fSpeed; }
-
 private:
 	// Input Handles
 	void HandleKeyboardInput(const double a_dt);
@@ -40,8 +33,8 @@ private:
 	// Calculate the rotation of the camera
 	void CalculateRotation(const double a_dt, const glm::dvec2 a_cursorDelta);
 
-	// Movement Speed
-	float m_flySpeed;
+	// Camera velocity [accumulating scalar]
+	glm::vec3 m_flyVelocity;
 	// Rotational speed
 	float m_rotSpeed;
 	// Movement Speed Multiplier (on Zoom)

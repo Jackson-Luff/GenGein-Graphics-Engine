@@ -4,8 +4,10 @@
 #include <string>
 #include <glm\glm.hpp>
 
-#include "Console\Console.h"
+#include "Input\Console\Console.h"
 #include "Shape.h"
+
+using C_LOG_TYPE = Console::LOG_TYPE;
 
 void CreateCube(Shape::ShapeBufferProperties& a_shape)
 {
@@ -72,127 +74,6 @@ void CreateCube(Shape::ShapeBufferProperties& a_shape)
 	glBindVertexArray(0);
 }
 
-/*
-Shape::ShapeProperties GenerateVertex()
-{
-	Shape::ShapeProperties vertex;
-
-	glm::vec3 p[] = {
-		{ -1.0f, -1.0f, -1.0f },
-		{ -1.0f, -1.0f, +1.0f },
-		{ -1.0f, +1.0f, +1.0f },
-		{ +1.0f, +1.0f, -1.0f },
-		{ -1.0f, -1.0f, -1.0f },
-		{ -1.0f, +1.0f, -1.0f },
-
-		{ +1.0f, -1.0f, +1.0f },
-		{ -1.0f, -1.0f, -1.0f },
-		{ +1.0f, -1.0f, -1.0f },
-		{ +1.0f, +1.0f, -1.0f },
-		{ +1.0f, -1.0f, -1.0f },
-		{ -1.0f, -1.0f, -1.0f },
-
-		{ -1.0f, -1.0f, -1.0f },
-		{ -1.0f, +1.0f, +1.0f },
-		{ -1.0f, +1.0f, -1.0f },
-		{ +1.0f, -1.0f, +1.0f },
-		{ -1.0f, -1.0f, +1.0f },
-		{ -1.0f, -1.0f, -1.0f },
-
-		{ -1.0f, +1.0f, +1.0f },
-		{ -1.0f, -1.0f, +1.0f },
-		{ +1.0f, -1.0f, +1.0f },
-		{ +1.0f, +1.0f, +1.0f },
-		{ +1.0f, -1.0f, -1.0f },
-		{ +1.0f, +1.0f, -1.0f },
-
-		{ +1.0f, -1.0f, -1.0f },
-		{ +1.0f, +1.0f, +1.0f },
-		{ +1.0f, -1.0f, +1.0f },
-		{ +1.0f, +1.0f, +1.0f },
-		{ +1.0f, +1.0f, -1.0f },
-		{ -1.0f, +1.0f, -1.0f },
-
-		{ +1.0f, +1.0f, +1.0f },
-		{ -1.0f, +1.0f, -1.0f },
-		{ -1.0f, +1.0f, +1.0f },
-		{ +1.0f, +1.0f, +1.0f },
-		{ -1.0f, +1.0f, +1.0f },
-		{ +1.0f, -1.0f, +1.0f },
-	};
-
-	glm::vec3 n[] = {
-		{ -1.0f, -1.0f, -1.0f },{ +1.0f, -1.0f, +1.0f },{ -1.0f, -1.0f, -1.0f },
-		{ -1.0f, -1.0f, +1.0f },{ -1.0f, -1.0f, -1.0f },{ -1.0f, +1.0f, +1.0f },
-		{ -1.0f, +1.0f, +1.0f },{ +1.0f, -1.0f, -1.0f },{ -1.0f, +1.0f, -1.0f },
-		{ +1.0f, +1.0f, -1.0f },{ +1.0f, +1.0f, -1.0f },{ +1.0f, -1.0f, +1.0f },
-		{ -1.0f, -1.0f, -1.0f },{ +1.0f, -1.0f, -1.0f },{ -1.0f, -1.0f, +1.0f },
-		{ -1.0f, +1.0f, -1.0f },{ -1.0f, -1.0f, -1.0f },{ -1.0f, -1.0f, -1.0f },
-
-		{ -1.0f, +1.0f, +1.0f },{ +1.0f, -1.0f, -1.0f },{ +1.0f, +1.0f, +1.0f },
-		{ -1.0f, -1.0f, +1.0f },{ +1.0f, +1.0f, +1.0f },{ -1.0f, +1.0f, -1.0f },
-		{ +1.0f, -1.0f, +1.0f },{ +1.0f, -1.0f, +1.0f },{ -1.0f, +1.0f, +1.0f },
-		{ +1.0f, +1.0f, +1.0f },{ +1.0f, +1.0f, +1.0f },{ +1.0f, +1.0f, +1.0f },
-		{ +1.0f, -1.0f, -1.0f },{ +1.0f, +1.0f, -1.0f },{ -1.0f, +1.0f, +1.0f },
-		{ +1.0f, +1.0f, -1.0f },{ -1.0f, +1.0f, -1.0f },{ +1.0f, -1.0f, +1.0f },
-	};
-
-	glm::vec2 uv[] = {
-		{ -1.0f, -1.0f },{ +1.0f, -1.0f },{ -1.0f, -1.0f },
-		{ -1.0f, -1.0f },{ -1.0f, -1.0f },{ -1.0f, +1.0f },
-		{ -1.0f, +1.0f },{ +1.0f, -1.0f },{ -1.0f, +1.0f },
-		{ +1.0f, +1.0f },{ +1.0f, +1.0f },{ +1.0f, -1.0f },
-		{ -1.0f, -1.0f },{ +1.0f, -1.0f },{ -1.0f, -1.0f },
-		{ -1.0f, +1.0f },{ -1.0f, -1.0f },{ -1.0f, -1.0f },
-						    				 				  
-		{ -1.0f, +1.0f },{ +1.0f, -1.0f },{ +1.0f, +1.0f },
-		{ -1.0f, -1.0f },{ +1.0f, +1.0f },{ -1.0f, +1.0f },
-		{ +1.0f, -1.0f },{ +1.0f, -1.0f },{ -1.0f, +1.0f },
-		{ +1.0f, +1.0f },{ +1.0f, +1.0f },{ +1.0f, +1.0f },
-		{ +1.0f, -1.0f },{ +1.0f, +1.0f },{ -1.0f, +1.0f },
-		{ +1.0f, +1.0f },{ -1.0f, +1.0f },{ +1.0f, -1.0f },
-	};
-
-	vertex.positions  = p;
-	vertex.normals	 = n;
-	vertex.texCoords = uv;
-
-	return vertex;
-}
-
-void Shape::Create(const ShapeType a_type)
-{
-	Shape::ShapeProperties vertex;
-
-	switch (a_type)
-	{
-	case ShapeType::CUBE:
-		vertex = GenerateCubeVertex();
-		m_pProperties.m_indexCount = 36;
-		break;
-	case ShapeType::SPHERE:
-		break;
-	default:
-		Console::Log("#ERR | Invalid Shape Property \n");
-		break;
-	}
-
-	unsigned int vertFloatCount = m_pProperties.m_indexCount * sizeof(glm::vec3);
-	glGenVertexArrays(1, &m_pProperties.m_VAO);
-	glBindVertexArray(m_pProperties.m_VAO);
-
-	glGenBuffers(1, &m_pProperties.m_VBO);
-	glBindBuffer(GL_ARRAY_BUFFER, m_pProperties.m_VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(Shape::ShapeProperties) * m_pProperties.m_indexCount, &vertex, GL_STATIC_DRAW);
-
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Shape::ShapeProperties), (void*)offsetof(Shape::ShapeProperties, positions));
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Shape::ShapeProperties), (void*)offsetof(Shape::ShapeProperties, normals));
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Shape::ShapeProperties), (void*)offsetof(Shape::ShapeProperties, texCoords));
-
-	glBindVertexArray(0);
-}*/
-
 Shape::Shape()
 {}
 
@@ -216,7 +97,7 @@ void Shape::Create(const ShapeType a_type)
 
 		break;
 	default:
-		Console::Log("#ERR | Invalid Shape Property \n");
+		Console::Log(C_LOG_TYPE::LOG_ERROR, "Invalid Shape Property \n");
 		break;
 	}
 }

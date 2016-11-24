@@ -1,11 +1,12 @@
 #include <string>
 
 #include "Core\GL\gl_core_4_4.h"
-#include "Console\Console.h"
+#include "Input\Console\Console.h"
 
 #include "SProgram.h"
 
 using ShaderID = Shader::ShaderType;
+using C_LOG_TYPE = Console::LOG_TYPE;
 
 SProgram::SProgram() :
 	m_programName("\0"), m_programID(0),
@@ -103,7 +104,7 @@ bool SProgram::CompositeProgram()
 
 	if (!CheckProgramStatus(m_programID))
 	{
-		Console::Log("#ERR | %s PROGRAM FAILED TO INIT\n", m_programName);
+		Console::Log(C_LOG_TYPE::LOG_ERROR, "%s PROGRAM FAILED TO INIT\n", m_programName);
 		return false;
 	}
 
@@ -113,7 +114,7 @@ bool SProgram::CompositeProgram()
 	m_tessCShader->CleanUp();
 	m_tessEShader->CleanUp();
 
-	Console::Log("#SUC | %s PROGRAM SUCCESSFULL TO INIT\n", m_programName);
+	Console::Log(C_LOG_TYPE::LOG_SUCCESS, "%s PROGRAM SUCCESSFULL TO INIT\n", m_programName);
 	return true;
 }
 
@@ -153,7 +154,7 @@ bool SProgram::CheckProgramStatus(unsigned int a_prog)
 
 		// Print out the log
 		glGetProgramInfoLog(a_prog, infoLogLength, 0, infoLog);
-		Console::Log("#ERR | Failed to load program!\n%s\n", infoLog);
+		Console::Log(C_LOG_TYPE::LOG_ERROR, "Failed to load program!\n%s\n", infoLog);
 		delete[] infoLog;
 		return false;
 	}

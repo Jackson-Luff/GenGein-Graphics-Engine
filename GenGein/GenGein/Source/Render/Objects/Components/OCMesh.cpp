@@ -5,25 +5,31 @@
 #include "gl_core_4_4.h"
 
 // Engine includes
-#include "Console\Console.h"
+#include "Input\Console\Console.h"
 #include "OCMesh.h"
 
 using namespace glm;
 
-typedef std::vector<tinyobj::shape_t> Shape_t;
-typedef std::vector<tinyobj::material_t> Material_t;
+using Shape_t =  std::vector<tinyobj::shape_t>;
+using Material_t =  std::vector<tinyobj::material_t>;
+using C_LOG_TYPE = Console::LOG_TYPE;
 
-OCMesh::OCMesh()
+OCMesh::OCMesh() : Entity()
+{}
+
+OCMesh::OCMesh(unsigned int* a_progID) : Entity(a_progID)
 {
+	m_programID = a_progID;
 }
 
-OCMesh::OCMesh(unsigned int a_programID)
+OCMesh::OCMesh(unsigned int* a_progID, vec4 a_pos) : Entity(a_progID, a_pos)
 {
-	m_programID = a_programID;
+	m_programID = a_progID;
 }
 
 OCMesh::~OCMesh()
 {
+	glDeleteProgram(*m_programID);
 	for (VertexBufferInfo& buffer : vertexBufferList)
 	{
 		glDeleteVertexArrays(1, &buffer.m_VAO);
@@ -70,14 +76,15 @@ float* Calc_Tangents_BiNormals_Normals(tinyobj::mesh_t& a_m)
 	}
 }
 */
-std::vector<OCMesh::VertexBufferInfo> CreateOpenGLBuffers( std::vector<tinyobj::shape_t>& a_shapes)
+
+std::vector<Entity::VertexBufferInfo> OCMesh::CreateOpenGLBuffers( std::vector<tinyobj::shape_t>& a_shapes)
 {
-	std::vector<OCMesh::VertexBufferInfo> buffer_List;
+	std::vector<Entity::VertexBufferInfo> buffer_List;
 	buffer_List.resize(a_shapes.size());
 
 	for (tinyobj::shape_t& s : a_shapes)
 	{
-		OCMesh::VertexBufferInfo buffInfo;
+		Entity::VertexBufferInfo buffInfo;
 
 		glGenVertexArrays(1, &buffInfo.m_VAO);
 		glBindVertexArray(buffInfo.m_VAO);
@@ -132,7 +139,6 @@ std::vector<OCMesh::VertexBufferInfo> CreateOpenGLBuffers( std::vector<tinyobj::
 
 bool OCMesh::Load(const char* a_filename, const char* a_baseDir)
 {
-	
 	std::string err;
 	Shape_t shapes;
 	Material_t materials;
@@ -140,11 +146,11 @@ bool OCMesh::Load(const char* a_filename, const char* a_baseDir)
 	bool ret = tinyobj::LoadObj(shapes, materials, err, a_filename, a_baseDir);
 	
 	if (!err.empty()) {
-		Console::Log("#WAR | %s \n", err.c_str() );
+		Console::Log(C_LOG_TYPE::LOG_WARNING, "%s \n", err.c_str() );
 	}
 
 	if (!ret) {
-		Console::Log("#ERR | %s \n","FAILED TO LOAD/PARSE .OBJ\n");
+		Console::Log(C_LOG_TYPE::LOG_ERROR, "%s \n","FAILED TO LOAD/PARSE .OBJ\n");
 		return false;
 	}
 
@@ -155,7 +161,9 @@ bool OCMesh::Load(const char* a_filename, const char* a_baseDir)
 
 void OCMesh::Render()
 {
-	//glUseProgram(m_programID);
+	glUseProgram(*m_programID);
+
+	Entity::Update();
 
 	for (VertexBufferInfo& buffer : vertexBufferList) 
 	{

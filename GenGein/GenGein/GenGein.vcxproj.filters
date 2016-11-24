@@ -1,11 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="..\Deps\tinyOBJ\tinyOBJ\tiny_obj_loader.cc" />
-    <ClCompile Include="Source\Core\BaseApp.cpp" />
     <ClCompile Include="Source\Core\Time.cpp" />
     <ClCompile Include="Source\Core\GL\gl_core_4_4.cpp" />
-    <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\Input\Cameras\BaseCam.cpp" />
     <ClCompile Include="Source\Input\Cameras\FlyCam.cpp" />
     <ClCompile Include="Source\Maths\Mat4x4.cpp" />
@@ -17,29 +14,31 @@
     <ClCompile Include="Source\Render\GL\GLWindow.cpp" />
     <ClCompile Include="Source\Render\SkyBox.cpp" />
     <ClCompile Include="Source\Input\Input.cpp" />
-    <ClCompile Include="Source\Console\Console.cpp" />
-    <ClCompile Include="Projects\Test\TesterOfBaseApp.cpp" />
     <ClCompile Include="Source\Render\Shaders\Shader.cpp" />
     <ClCompile Include="Source\Render\Shaders\SProgram.cpp" />
     <ClCompile Include="Source\Render\Objects\Components\OCMesh.cpp" />
     <ClCompile Include="Source\Render\Objects\Components\Shape.cpp" />
     <ClCompile Include="Source\Render\Shaders\ShaderSet.cpp" />
     <ClCompile Include="Source\Render\Textures\Texture2D.cpp" />
-    <ClCompile Include="Source\Render\UniformBuffers\UniBuff.cpp" />
     <ClCompile Include="Source\Render\Textures\TextureCube.cpp" />
+    <ClCompile Include="Source\Render\UniformBuffers\Experimental\CamUniBuff.cpp" />
+    <ClCompile Include="Source\Render\UniformBuffers\Experimental\AdvUniBuff.cpp" />
+    <ClCompile Include="Source\Render\UniformBuffers\UniBuff.cpp" />
+    <ClCompile Include="Source\Input\Cameras\QuatCam.cpp" />
+    <ClCompile Include="Middleware\tinyOBJ\tinyOBJ\tiny_obj_loader.cc" />
+    <ClCompile Include="Projects\Test\TestScene.cpp" />
+    <ClCompile Include="Projects\BaseApp.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Source\Input\Console\Console.cpp" />
+    <ClCompile Include="Source\Render\Objects\Components\Entity.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\Core\BaseApp.h" />
     <ClInclude Include="Source\Core\Time.h" />
-    <ClInclude Include="Source\Input\Cameras\BaseCam.h" />
     <ClInclude Include="Source\Maths\GenGeinMaths.h" />
     <ClInclude Include="Source\Input\Cameras\FlyCam.h" />
-    <ClInclude Include="Source\Render\Material\Material.h" />
     <ClInclude Include="Source\Render\GL\GLWindow.h" />
     <ClInclude Include="Source\Render\SkyBox.h" />
     <ClInclude Include="Source\Input\Input.h" />
-    <ClInclude Include="Source\Console\Console.h" />
-    <ClInclude Include="Projects\Test\TesterOfBaseApp.h" />
     <ClInclude Include="Source\Core\GL\gl_core_4_4.h" />
     <ClInclude Include="Source\Render\Shaders\Shader.h" />
     <ClInclude Include="Source\Render\Shaders\SProgram.h" />
@@ -48,7 +47,15 @@
     <ClInclude Include="Source\Render\Objects\Components\Shape.h" />
     <ClInclude Include="Source\Render\Shaders\ShaderSet.h" />
     <ClInclude Include="Source\Render\Textures\Texture2D.h" />
-    <ClInclude Include="Source\Render\UniformBuffers\UniBuff.h" />
     <ClInclude Include="Source\Render\Textures\TextureCube.h" />
+    <ClInclude Include="Source\Input\Cameras\BaseCam.h" />
+    <ClInclude Include="Source\Render\UniformBuffers\Experimental\CamUniBuff.h" />
+    <ClInclude Include="Source\Render\UniformBuffers\Experimental\AdvUniBuff.h" />
+    <ClInclude Include="Source\Render\UniformBuffers\UniBuff.h" />
+    <ClInclude Include="Source\Input\Cameras\QuatCam.h" />
+    <ClInclude Include="Projects\Test\TestScene.h" />
+    <ClInclude Include="Projects\BaseApp.h" />
+    <ClInclude Include="Source\Input\Console\Console.h" />
+    <ClInclude Include="Source\Render\Objects\Components\Entity.h" />
   </ItemGroup>
 </Project>

@@ -21,6 +21,7 @@ public:
 	BaseCam();
 	BaseCam(const glm::vec3& a_position, const glm::vec3& a_lkAt);
 	BaseCam(const glm::mat4& a_transform);
+
 	// Deconstructor
 	~BaseCam();
 
