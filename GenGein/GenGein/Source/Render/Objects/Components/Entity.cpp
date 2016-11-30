@@ -86,6 +86,7 @@ const bool Entity::SetTransform(const mat4 a_nRot)
 	return true;
 }
 
+
 // Adds
 
 const bool Entity::AddScale(const vec3 a_nScale)

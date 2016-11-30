@@ -1,11 +1,10 @@
-#include <iostream>
+#include "Core\GL\GLWindow.h"
+#include "Core\Time.h"
+#include "Render\Shaders\ShaderSet.h"
 
 #include "Input\Input.h"
 #include "Input\Cameras\BaseCam.h"
 #include "Input\Console\Console.h"
-#include "Render\GL\GLWindow.h"
-#include "Render\UniformBuffers\UniBuff.h"
-#include "Core\Time.h"
 
 #include "BaseApp.h"
 
@@ -28,10 +27,10 @@ void BaseApp::StartUp(const int a_width, const int a_height, const char* a_title
 
 	m_pGLWindow = new GLwindow();
 	m_pGLWindow->SetUp(a_width, a_height, a_title, a_fullscreen);
-	m_pGLWindow->SetWindowColour(0.2f, 0.65f, 0.75f);
+	m_pGLWindow->SetWindowColour(0.0f, 0.0f, 0.0f);
 	m_pGLWindow->EnableVSync(true);
 	m_pGLWindow->EnableDepthTest(true);
-	m_pGLWindow->EnableOneMinusAlphaBlend(true);
+	m_pGLWindow->EnableOneMinusAlphaBlend(true);	
 }
 
 void BaseApp::ShutDown()
@@ -73,7 +72,7 @@ void BaseApp::Run()
 		Update(dt);
 
 		// Clear window colour/depth buffers
-		m_pGLWindow->ClearBuffers();
+		//m_pGLWindow->ClearBuffers();
 		// Render mainframe
 		Render();
 		// Swap front with back buffer

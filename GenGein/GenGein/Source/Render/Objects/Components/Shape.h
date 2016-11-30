@@ -1,7 +1,6 @@
 #pragma once
-
 #include <vector>
-#include <string>
+#include <glm\glm.hpp>
 
 class Shape
 {
@@ -9,6 +8,7 @@ public:
 
 	enum ShapeType : char
 	{
+		PLANE,
 		CUBE,
 		SPHERE
 	};
@@ -19,21 +19,28 @@ public:
 	void Create(const ShapeType a_type);
 	void Render();
 
-	struct ShapeProperties
+	struct VertexProperty
 	{
-		glm::vec3* positions;
-		glm::vec3* normals;
-		glm::vec2* texCoords;
+		glm::vec3 position;
+		glm::vec3 normal;
+		glm::vec2 tCoord;
 	};
+	
+private:
 
-	struct ShapeBufferProperties
+	struct BufferProperties
 	{
 		unsigned int m_VAO;
 		unsigned int m_VBO;
-		unsigned int m_indexCount;
+		unsigned int m_IBO;
+		unsigned int m_IndexCount;
 	};
 
-private:
+	//
+	void CreateShapeProperties(
+		std::vector<VertexProperty>& a_verts,
+		std::vector<unsigned int>& a_indices);
 	
-	ShapeBufferProperties m_pProperties;
+	ShapeType m_shapeType;
+	BufferProperties m_bufferInfo;
 };

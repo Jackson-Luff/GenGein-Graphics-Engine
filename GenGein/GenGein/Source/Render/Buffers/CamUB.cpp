@@ -2,22 +2,22 @@
 
 #include "Core\GL\gl_core_4_4.h"
 
-#include "UniBuff.h"
+#include "CamUB.h"
 
-UniBuff::UniBuff()
+CamUB::CamUB()
 	: m_UBO(-1), m_blockIndex(-1),
 	m_unibuffstorage(UNI_BUFF_STORAGE())
 {}
 
-UniBuff::~UniBuff()
+CamUB::~CamUB()
 {}
 
-void UniBuff::SetUp(const glm::vec4& a_camPos, const glm::mat4& a_camProj, const glm::mat4& a_camView)
+void CamUB::SetUp(const glm::mat4& a_camWlrd, const glm::mat4& a_camProj, const glm::mat4& a_camView)
 {
 	//#TODO: set up uniform code to be like
-	// addtounibuff(float*, float count, name)
+	// addtoCamUB(float*, float count, name)
 	// 
-	m_dataPointers.camPosition = &a_camPos;
+	m_dataPointers.camWorld = &a_camWlrd;
 	m_dataPointers.camProj = &a_camProj;
 	m_dataPointers.camView = &a_camView;
 
@@ -27,18 +27,20 @@ void UniBuff::SetUp(const glm::vec4& a_camPos, const glm::mat4& a_camProj, const
 	glBindBuffer(GL_UNIFORM_BUFFER, NULL);
 }
 
-void UniBuff::CleanUp()
+void CamUB::CleanUp()
 {
 	glDeleteBuffers(1, &m_UBO);
 }
 
-void UniBuff::Update()
+void CamUB::Update()
 {
-	if (m_unibuffstorage.camPosition != *m_dataPointers.camPosition ||
-		m_unibuffstorage.camProj != *m_dataPointers.camProj ||
-		m_unibuffstorage.camView != *m_dataPointers.camView)
+	// #NOTE: Not that efficient. Comparing 3 matricies.. Jesus.
+	// #TODO: Improve this process
+	if (m_unibuffstorage.camWorld != *m_dataPointers.camWorld ||
+		m_unibuffstorage.camProj  != *m_dataPointers.camProj  ||
+		m_unibuffstorage.camView  != *m_dataPointers.camView)
 	{
-		m_unibuffstorage.camPosition = *m_dataPointers.camPosition;
+		m_unibuffstorage.camWorld = *m_dataPointers.camWorld;
 		m_unibuffstorage.camProj = *m_dataPointers.camProj;
 		m_unibuffstorage.camView = *m_dataPointers.camView;
 
@@ -50,6 +52,5 @@ void UniBuff::Update()
 		//#TODO: Allow multiple shader programs -- std::vector<programs> foreach
 		unsigned int bindingPoint = 0;
 		glBindBufferBase(GL_UNIFORM_BUFFER, bindingPoint, m_UBO);
-		//glUniformBlockBinding(*m_programID, m_blockIndex, bindingPoint);
 	}
 }

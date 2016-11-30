@@ -77,11 +77,52 @@ float* Calc_Tangents_BiNormals_Normals(tinyobj::mesh_t& a_m)
 }
 */
 
-std::vector<Entity::VertexBufferInfo> OCMesh::CreateOpenGLBuffers( std::vector<tinyobj::shape_t>& a_shapes)
+bool OCMesh::Load(const char* a_filename, const char* a_baseDir)
+{
+	std::string err;
+	Shape_t shapes;
+	Material_t materials;
+
+	bool ret = tinyobj::LoadObj(shapes, materials, err, a_filename, a_baseDir);
+	
+	if (!err.empty()) {
+		Console::Log(C_LOG_TYPE::LOG_WARNING, "%s \n", err.c_str() );
+	}
+
+	if (!ret) {
+		Console::Log(C_LOG_TYPE::LOG_ERROR, "%s \n","FAILED TO LOAD/PARSE .OBJ\n");
+		return false;
+	}
+
+	vertexBufferList = CreateOpenGLBuffers(shapes);
+
+	return true;
+}
+
+void OCMesh::Render()
+{
+	glUseProgram(*m_programID);
+	Entity::Update();
+
+	for (VertexBufferInfo& buffer : vertexBufferList) 
+	{
+		glBindVertexArray(buffer.m_VAO);
+		glDrawElements(GL_TRIANGLES, buffer.m_index_count, GL_UNSIGNED_INT, 0);
+	}
+}
+
+void OCMesh::UseProgram()
+{
+	glUseProgram(*m_programID);
+}
+
+// Private Func's:
+
+std::vector<Entity::VertexBufferInfo> OCMesh::CreateOpenGLBuffers(std::vector<tinyobj::shape_t>& a_shapes)
 {
 	std::vector<Entity::VertexBufferInfo> buffer_List;
-	buffer_List.resize(a_shapes.size());
 
+	glUseProgram(*m_programID);
 	for (tinyobj::shape_t& s : a_shapes)
 	{
 		Entity::VertexBufferInfo buffInfo;
@@ -101,14 +142,6 @@ std::vector<Entity::VertexBufferInfo> OCMesh::CreateOpenGLBuffers( std::vector<t
 		v_data.insert(v_data.end(), s.mesh.positions.begin(), s.mesh.positions.end());
 		v_data.insert(v_data.end(), s.mesh.normals.begin(), s.mesh.normals.end());
 		v_data.insert(v_data.end(), s.mesh.texcoords.begin(), s.mesh.texcoords.end());
-
-		//for (size_t i = 0; i < s.mesh.positions.size(); i++)
-		//{
-		//	float n[3] = CalcNormal(s.mesh.positions[3 * );
-		//	v_data.push_back(n[0]);
-		//	v_data.push_back(n[1]);
-		//	v_data.push_back(n[2]);
-		//}
 
 		//Index data
 		buffInfo.m_index_count = (unsigned int)s.mesh.indices.size();
@@ -136,39 +169,3 @@ std::vector<Entity::VertexBufferInfo> OCMesh::CreateOpenGLBuffers( std::vector<t
 
 	return buffer_List;
 }
-
-bool OCMesh::Load(const char* a_filename, const char* a_baseDir)
-{
-	std::string err;
-	Shape_t shapes;
-	Material_t materials;
-
-	bool ret = tinyobj::LoadObj(shapes, materials, err, a_filename, a_baseDir);
-	
-	if (!err.empty()) {
-		Console::Log(C_LOG_TYPE::LOG_WARNING, "%s \n", err.c_str() );
-	}
-
-	if (!ret) {
-		Console::Log(C_LOG_TYPE::LOG_ERROR, "%s \n","FAILED TO LOAD/PARSE .OBJ\n");
-		return false;
-	}
-
-	vertexBufferList = CreateOpenGLBuffers(shapes);
-
-	return true;
-}
-
-void OCMesh::Render()
-{
-	glUseProgram(*m_programID);
-
-	Entity::Update();
-
-	for (VertexBufferInfo& buffer : vertexBufferList) 
-	{
-		glBindVertexArray(buffer.m_VAO);
-		glDrawElements(GL_TRIANGLES, buffer.m_index_count, GL_UNSIGNED_INT, 0);
-	}
-}
-

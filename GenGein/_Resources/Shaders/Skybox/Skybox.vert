@@ -1,12 +1,14 @@
 
-layout(std140) uniform CameraInfo
+layout(std140) uniform CamUB
 {
-	vec4 camPosition;
+	mat4 camWrld;
 	mat4 camProj;
 	mat4 camView;
 };
 
 layout(location=0) in vec3 vertPosition;
+layout(location=1) in vec3 vertNormal;
+layout(location=2) in vec3 vertCoord;
 
 out vec3 vPosition;
 

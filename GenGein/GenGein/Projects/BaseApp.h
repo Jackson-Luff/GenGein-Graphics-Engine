@@ -1,7 +1,6 @@
 #pragma once
 
 class Time;
-class UniBuff;
 class GLwindow;
 class BaseCam;
 
@@ -11,7 +10,7 @@ public:
 	BaseApp();
 	~BaseApp();
 
-	// Backbone methods
+	// Backbone start up
 	virtual void StartUp(const int, const int, const char*, bool = false) = 0;
 	void Run();
 

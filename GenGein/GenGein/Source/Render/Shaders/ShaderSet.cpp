@@ -262,7 +262,7 @@ void ShaderSet::UpdatePrograms()
 			glGetProgramInfoLog(program.second.InternalHandle, logLength, NULL, log.data());
 
 			std::string log_s = log.data();
-
+			
 			// replace all filename hashes in the error messages with actual filenames
 			std::string preamble_hash = std::to_string((int32_t)std::hash<std::string>()("preamble"));
 			for (size_t found_preamble; (found_preamble = log_s.find(preamble_hash)) != std::string::npos;) {
@@ -278,7 +278,7 @@ void ShaderSet::UpdatePrograms()
 
 			GLint status;
 			glGetProgramiv(program.second.InternalHandle, GL_LINK_STATUS, &status);
-
+			
 			std::string msg;
 			C_LOG_TYPE log_type;
 			if (!status)

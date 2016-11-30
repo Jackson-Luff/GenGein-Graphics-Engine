@@ -18,6 +18,7 @@ public:
 
 	bool Load(const char* a_filename, const char* a_baseDir);
 	void Render();
+	void UseProgram();
 
 private:
 	

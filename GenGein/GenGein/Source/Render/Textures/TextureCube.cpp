@@ -7,7 +7,7 @@
 using C_LOG_TYPE = Console::LOG_TYPE;
 
 TextureCube::TextureCube()
-	: m_name("\0"), m_GLTexture(-1), m_GLSlot(-1), m_UniformLocation(-1)
+	: m_name("\n"), m_GLTexture(-1), m_GLSlot(-1), m_UniformLocation(-1)
 {}
 
 TextureCube::TextureCube(const unsigned int* a_programID, const std::string a_name) : TextureCube()
@@ -46,7 +46,7 @@ void TextureCube::AddUniqueTextures(std::vector<std::string> a_skyPath, unsigned
 
 		if (data == NULL)
 		{
-			Console::Log(C_LOG_TYPE::LOG_WARNING, "Missing texture at: %s", path);
+			Console::Log(C_LOG_TYPE::LOG_WARNING, "Missing texture at: %s\n", path);
 			continue;
 		}
 
@@ -71,6 +71,7 @@ void TextureCube::AddUniqueTextures(std::vector<std::string> a_skyPath, unsigned
 
 void TextureCube::Render()
 {
+	//#NOTE: Texture Render DOES NOT need to be called every-frame
 	int loc = m_GLSlot - GL_TEXTURE0;
 
 	glActiveTexture(m_GLSlot);

@@ -1,34 +1,31 @@
-layout(std140) uniform UniBuff
+// Monkey Vertex Shader
+
+layout(location = 0) in vec4 vertPos;
+layout(location = 1) in vec3 vertNormal;
+layout(location = 2) in vec2 vertCoord;
+
+uniform mat4 LocalMatrix;
+
+layout(std140) uniform CamUB
 {
-	vec4 camPosition;
+	mat4 camWrld;
 	mat4 camProj;
 	mat4 camView;
 };
 
-in layout(location=0) vec4 vertPosition;
-in layout(location=1) vec4 vertNormal;
-in layout(location=2) vec2 vertUV;
-
-uniform mat4 LocalMatrix;
-
-out vec3 vNormals;
-out vec2 vCoords;
-
+out vec3 vNormal;
 out vec3 vLightDir;
-out vec3 vCamPos;
 
 vec3 lightPos = vec3(5.0, 5.0, 0.0);
 
 void main()
 {
+	// Generate vertex position
 	mat4 camera = (camProj * camView );
-	vec4 p = camera * (LocalMatrix * vertPosition);
+	vec4 p = camera * (LocalMatrix * vertPos);
 	gl_Position = p;
 	
-	vNormals = vec3( LocalMatrix * vertNormal );
-	vCoords = vertUV;
-	
 	// Diffuse lighting
-	vLightDir = normalize(lightPos - vertPosition.xyz);
-	vCamPos = camPosition.xyz;
+	vNormal = mat3(LocalMatrix) * vertNormal.xyz;
+	vLightDir = normalize(lightPos - vertPos.xyz);
 }

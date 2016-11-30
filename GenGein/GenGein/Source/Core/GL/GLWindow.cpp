@@ -21,6 +21,9 @@ GLwindow::~GLwindow()
 
 void GLwindow::SetUp(const int a_width, const int a_height, const char* a_title, bool a_fullscreen)
 {
+	m_windowWidth = a_width;
+	m_windowHeight = a_height;
+
 	if (InitGLWindow(a_width, a_height, a_title, a_fullscreen))
 		Console::Log(C_LOG_TYPE::LOG_SUCCESS, "Window Build Complete!\n");
 	else
@@ -40,7 +43,7 @@ void GLwindow::SetWindowColour(const float a_R, const float a_G, const float a_B
 		(a_B < 0 || a_B > 1))
 		Console::Log(C_LOG_TYPE::LOG_WARNING, "window colour exceeds GL units.\n");
 
-	glClearColor(a_R, a_G, a_B, 1.0f);
+	glClearColor(a_R, a_G, a_B, 0.0f);
 }
 
 void GLwindow::AttemptWindowReSize()
@@ -58,6 +61,7 @@ void GLwindow::AttemptWindowReSize()
 
 void GLwindow::ClearBuffers()
 {
+	// #NOTE: Probably doesn't need to be every frame
 	// Check if needing to update window size
 	AttemptWindowReSize();
 
@@ -169,14 +173,14 @@ bool GLwindow::InitGLWindow(const int a_width, const int a_height, const char* a
 	if (a_fullscreen)
 	{
 		monitor = glfwGetPrimaryMonitor();
-
 		const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+
 		glfwWindowHint(GLFW_RED_BITS, mode->redBits);
 		glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
 		glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
 		glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
 	}
-	
+
 	// Create Window knowing the init is safe
 	m_pWindow = glfwCreateWindow(a_width, a_height, a_title, monitor, 0);
 

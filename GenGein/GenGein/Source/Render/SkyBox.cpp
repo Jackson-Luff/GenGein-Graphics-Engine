@@ -17,7 +17,7 @@ using C_LOG_TYPE = Console::LOG_TYPE;
 std::vector<std::string> GetSmartDirectories(const SkyBox::SkyType a_presetType)
 {
 	std::string skyDir = "_Resources/Textures/SkyBoxes";
-	std::string fileType = ".jpg";
+	std::string fileType = ".tga";
 	std::string names[6]
 	{
 		"posz", "negz",
@@ -25,26 +25,21 @@ std::vector<std::string> GetSmartDirectories(const SkyBox::SkyType a_presetType)
 		"posx", "negx",
 	};
 
+	// #TODO: This is gross as fuck. Handle this better. <3 ~ yourself
 	//Setup Sea Directory
 	switch (a_presetType)
 	{
-		break;
-	case SkyBox::SkyType::SKY:
-		skyDir.append("/Sky/");		
-		break;
-	case SkyBox::SkyType::SPACE:
-		skyDir.append("/Space/");		
-		break;
-	case SkyBox::SkyType::CHAPEL:
-		skyDir.append("/Chapel/");		
-		break;
-	case SkyBox::SkyType::GOLDRUSH:
-		skyDir.append("/GoldRush/");	
-		fileType = ".tga";
-	case SkyBox::SkyType::FROZEN:
-		skyDir.append("/Frozen/");
-		fileType = ".tga";
-		break;
+	case SkyBox::SkyType::SKY:				skyDir.append("/Sky/");				 fileType = ".jpg"; break;
+	case SkyBox::SkyType::SPACE:			skyDir.append("/Space/");			 fileType = ".jpg"; break;
+	case SkyBox::SkyType::CHAPEL:			skyDir.append("/Chapel/");			 fileType = ".jpg"; break;
+	case SkyBox::SkyType::GOLDRUSH:			skyDir.append("/Goldrush/");		 fileType = ".tga"; break;
+	case SkyBox::SkyType::FROZEN:			skyDir.append("/Frozen/");			 fileType = ".tga"; break;
+	case SkyBox::SkyType::MORNING:			skyDir.append("/Morning/");			 fileType = ".tga"; break;
+	case SkyBox::SkyType::SUNSET:			skyDir.append("/SunSet/");			 fileType = ".png";	break;
+	case SkyBox::SkyType::DARKSTORMY:		skyDir.append("/DarkStormy/");		 fileType = ".png"; break;
+	case SkyBox::SkyType::TROPICALSUNNY:	skyDir.append("/TropicalSunny/");	 fileType = ".png"; break;
+	case SkyBox::SkyType::CLOUDYLIGHTRAYS:	skyDir.append("/CloudyLightRays/");  fileType = ".png"; break;
+	case SkyBox::SkyType::THICKCLOUDSWATER:	skyDir.append("/ThickCloudsWater/"); fileType = ".png"; break;
 	default:
 		Console::Log(C_LOG_TYPE::LOG_ERROR, "No such directory %s.\n", skyDir.c_str());
 		break;

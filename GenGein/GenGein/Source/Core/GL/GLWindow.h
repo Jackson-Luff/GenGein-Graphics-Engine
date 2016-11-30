@@ -29,6 +29,7 @@ public:
 	// Consults GLFW for should close
 	bool ShouldShutDown();
 
+	
 	// Enable Depth Testing
 	void EnableDepthTest(bool a_enable);
 	// Transparent handle
@@ -39,6 +40,11 @@ public:
 	void EnableFullscreen(bool);
 	// Select Monitor to use
 	void SelectMonitor(MONITOR_ID);
+
+	// Get Window Width
+	inline const int GetWidth() { return m_windowWidth; }
+	// Get Window Height
+	inline const int GetHeight() { return m_windowHeight; }
 private:
 
 	bool InitGLWindow(const int, const int, const char*, bool);

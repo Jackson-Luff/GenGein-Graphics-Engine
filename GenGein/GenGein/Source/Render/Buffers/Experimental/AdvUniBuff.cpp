@@ -8,11 +8,11 @@ AdvUniBuff::AdvUniBuff()
 	: m_UBO(-1), m_blockIndex(-1)
 {}
 
-AdvUniBuff::AdvUniBuff(unsigned int* a_programID) : AdvUniBuff()
-{
-	m_programID = a_programID;
-	m_blockIndex = glGetUniformBlockIndex(*m_programID, "CameraInfo");
-}
+//AdvUniBuff::AdvUniBuff(unsigned int* a_programID) : AdvUniBuff()
+//{
+//	m_programID = a_programID;
+//	m_blockIndex = glGetUniformBlockIndex(*m_programID, "CameraInfo");
+//}
 
 AdvUniBuff::~AdvUniBuff()
 {}

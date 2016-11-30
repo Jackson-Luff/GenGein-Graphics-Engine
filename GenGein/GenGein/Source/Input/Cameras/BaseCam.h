@@ -28,10 +28,6 @@ public:
 	// Inheritable update
 	virtual void Update(const double a_dt){};
 
-	// Set World Position
-	glm::mat4 GetWorldTrans() { return m_worldTrans; }
-	void SetWorldTrans(const glm::mat4& a_newWrldTrns);
-	
 	// Get Position
 	inline const glm::vec4& GetPosition() const { return m_worldTrans[3]; }
 	// Set Position
@@ -55,13 +51,18 @@ public:
 	glm::vec3 PickAgainstPlane(const glm::vec4& plane) const;
 
 	// Getter for Projection Transform
-	inline const glm::mat4& GetProjTrans()	const { return m_projTrans; }
+	inline const glm::mat4& GetProjTrans()		const { return m_projTrans; }
 
 	// Getter for View Transform
-	inline const glm::mat4& GetViewTrans()	const { return m_viewTrans; }
+	inline const glm::mat4& GetViewTrans()		const { return m_viewTrans; }
 
 	// Getter for ProjectionView Transform
 	inline const glm::mat4& GetProjViewTrans()	const { return m_projViewTrans; }
+
+	// Getter for World Position
+	inline const glm::mat4& GetWorldTrans()		const { return m_worldTrans; }
+	// Setter for World Transform
+	void SetWorldTrans(const glm::mat4& a_newWrldTrns);
 
 protected:
 	// Update Projection View
