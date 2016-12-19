@@ -20,11 +20,13 @@ OCMesh::OCMesh() : Entity()
 OCMesh::OCMesh(unsigned int* a_progID) : Entity(a_progID)
 {
 	m_programID = a_progID;
+	m_instances.push_back(vec4(0,0,0,1));
 }
 
 OCMesh::OCMesh(unsigned int* a_progID, vec4 a_pos) : Entity(a_progID, a_pos)
 {
 	m_programID = a_progID;
+	m_instances.push_back(a_pos);
 }
 
 OCMesh::~OCMesh()
@@ -102,18 +104,29 @@ bool OCMesh::Load(const char* a_filename, const char* a_baseDir)
 void OCMesh::Render()
 {
 	glUseProgram(*m_programID);
-	Entity::Update();
+	
 
-	for (VertexBufferInfo& buffer : vertexBufferList) 
+	for (glm::vec4 inst : m_instances)
 	{
-		glBindVertexArray(buffer.m_VAO);
-		glDrawElements(GL_TRIANGLES, buffer.m_index_count, GL_UNSIGNED_INT, 0);
+		Entity::Update();
+		SetPosition(inst);
+		for (VertexBufferInfo& buffer : vertexBufferList)
+		{
+			glBindVertexArray(buffer.m_VAO);
+			glDrawElements(GL_TRIANGLES, buffer.m_index_count, GL_UNSIGNED_INT, 0);
+		}
 	}
+	
 }
 
 void OCMesh::UseProgram()
 {
 	glUseProgram(*m_programID);
+}
+
+void OCMesh::AddInstance(glm::vec4 a_pos)
+{
+	m_instances.push_back(a_pos);
 }
 
 // Private Func's:

@@ -7,8 +7,8 @@ class GBuffer;
 class ShaderSet;
 class CamUB;
 class OCMesh;
-
 // WARNING: TEMP!
+
 class TestScene : public BaseApp
 {
 public:

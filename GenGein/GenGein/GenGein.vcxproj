@@ -76,18 +76,18 @@
     <LinkIncremental>true</LinkIncremental>
     <PreBuildEventUseInBuild>true</PreBuildEventUseInBuild>
     <PreLinkEventUseInBuild>true</PreLinkEventUseInBuild>
-    <OutDir>$(SolutionDir)\Bin\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)\Intermediate\$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)\_Bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)\Intermediate\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(SolutionDir)\Bin\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)\Intermediate\$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)\_Bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)\Intermediate\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IntDir>$(SolutionDir)\Intermediate\$(Platform)\$(Configuration)\</IntDir>
-    <OutDir>$(SolutionDir)\Bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)\Intermediate\$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)\_Bin\$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -137,7 +137,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLM_SWIZZLE;GLM_FORCE_PURE;WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)Deps\GLFW\x64\include\;$(SolutionDir)Deps\GL_CORE\;$(SolutionDir)Deps\GLM\include\;$(SolutionDir)Deps\STB\;$(SolutionDir)Deps\tinyOBJ\;$(ProjectDir)\Source\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\Middleware\GLFW\x86\include\;$(ProjectDir)\Middleware\GL_CORE\;$(ProjectDir)\Middleware\GLM\include\;$(ProjectDir)\Middleware\STB\;$(ProjectDir)\Source\;$(ProjectDir)\Middleware\tinyOBJ\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -163,6 +163,9 @@
       <Message>
       </Message>
     </PostBuildEvent>
+    <BuildLog>
+      <Path>$(ProjectDir)\Logs\$(MSBuildProjectName).log</Path>
+    </BuildLog>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -173,7 +176,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)Deps\GLFW\x86\include;$(SolutionDir)Deps\GL_CORE;$(SolutionDir)Deps\GLM\include;$(ProjectDir)\Source\;$(SolutionDir)Deps\tinyOBJ\;$(SolutionDir)Deps\STB\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\Middleware\GLFW\x86\include\;$(ProjectDir)\Middleware\GL_CORE\;$(ProjectDir)\Middleware\GLM\include\;$(ProjectDir)\Middleware\STB\;$(ProjectDir)\Source\;$(ProjectDir)\Middleware\tinyOBJ\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -183,6 +186,9 @@
       <AdditionalDependencies>glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)Deps\GLFW\x84\lib-vc2015;$(SolutionDir)Deps\FBXLoader\lib</AdditionalLibraryDirectories>
     </Link>
+    <BuildLog>
+      <Path>$(ProjectDir)\Logs\$(MSBuildProjectName).log</Path>
+    </BuildLog>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -193,18 +199,22 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)Deps\GLFW\x64\include\;$(SolutionDir)Deps\GL_CORE\;$(SolutionDir)Deps\GLM\include\;$(SolutionDir)Deps\STB\;$(SolutionDir)Deps\tinyOBJ\;$(ProjectDir)\Source\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\Middleware\GLFW\x86\include\;$(ProjectDir)\Middleware\GL_CORE\;$(ProjectDir)\Middleware\GLM\include\;$(ProjectDir)\Middleware\STB\;$(ProjectDir)\Source\;$(ProjectDir)\Middleware\tinyOBJ\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)Deps\GLFW\x64\lib-vc2015\;$(SolutionDir)Deps\FBXLoader\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)Middleware\GLFW\x64\lib-vc2015;$(ProjectDir)Middleware\FBXLoader\lib</AdditionalLibraryDirectories>
     </Link>
+    <BuildLog>
+      <Path>$(ProjectDir)\Logs\$(MSBuildProjectName).log</Path>
+    </BuildLog>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Render\ShadowMap.h" />
     <ClInclude Include="Source\Render\Buffers\GBuffer.h" />
     <ClInclude Include="Source\Render\Objects\Components\Entity.h" />
     <ClInclude Include="Projects\BaseApp.h" />
@@ -228,6 +238,7 @@
     <ClInclude Include="Source\Render\Buffers\CamUB.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Render\ShadowMap.cpp" />
     <ClCompile Include="Source\Render\Buffers\GBuffer.cpp" />
     <ClCompile Include="Source\Render\Objects\Components\Entity.cpp" />
     <ClCompile Include="main.cpp" />

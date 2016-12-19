@@ -192,14 +192,14 @@ bool GLwindow::InitGLWindow(const int a_width, const int a_height, const char* a
 
 	// Now we know the window is safe; apply context.
 	glfwMakeContextCurrent(m_pWindow);
-
+	
 	//// OpenGL Loader Generator
 	if (ogl_LoadFunctions() == ogl_LOAD_FAILED) {
 		glfwDestroyWindow(m_pWindow);
 		glfwTerminate();
 		return false;
 	}
-
+	
 	// All's a-go. 
 	return true;
 }

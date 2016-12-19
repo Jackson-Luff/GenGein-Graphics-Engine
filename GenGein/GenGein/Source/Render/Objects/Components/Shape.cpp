@@ -30,7 +30,7 @@ void Shape::Create(const ShapeType a_type)
 	// #SECRET: Beefy boi returns a big chunk of dates
 	CreateShapeProperties(vertices, indices);
 
-	m_bufferInfo.m_IndexCount = indices.size();
+	m_bufferInfo.m_IndexCount = (unsigned int)indices.size();
 
 	unsigned int& vao = m_bufferInfo.m_VAO;
 	unsigned int& vbo = m_bufferInfo.m_VBO;

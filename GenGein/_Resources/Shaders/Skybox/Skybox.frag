@@ -2,9 +2,9 @@ in vec3 vPosition;
 
 uniform samplerCube SkyBox;
 
-out vec4 pixelColour;
+layout(location = 2) out vec4 gAlbedoSpec;
 
 void main()
 {
-	pixelColour = texture(SkyBox, vPosition);
+	gAlbedoSpec = texture(SkyBox, vPosition);
 }

@@ -106,10 +106,10 @@ void ShaderSet::SetVersion(const std::string& version)
 	mVersion = version;
 }
 
-void ShaderSet::SetPreamble(const std::string& preamble)
-{
-	mPreamble = preamble;
-}
+//void ShaderSet::SetPreamble(const std::string& preamble)
+//{
+//	mPreamble = preamble;
+//}
 
 GLuint* ShaderSet::AddProgram(const std::vector<std::pair<std::string, GLenum>>& typedShaders)
 {
@@ -172,9 +172,9 @@ void ShaderSet::UpdatePrograms()
 		// the #line directive also allows specifying a "file name" number, which makes it possible to identify which file the error came from.
 		std::string version = "#version " + mVersion + "\n";
 
-		std::string preamble_hash = std::to_string((int32_t)std::hash<std::string>()("preamble"));
-		std::string premable = "#line 1 " + preamble_hash + "\n" +
-			mPreamble + "\n";
+		//std::string preamble_hash = std::to_string((int32_t)std::hash<std::string>()("preamble"));
+		//std::string premable = "#line 1 " + preamble_hash + "\n" +
+		//	mPreamble + "\n";
 
 		std::string source_hash = std::to_string(shader->second.HashName);
 		std::string source = "#line 1 " + source_hash + "\n" +
@@ -182,12 +182,12 @@ void ShaderSet::UpdatePrograms()
 
 		const char* strings[] = {
 			version.c_str(),
-			premable.c_str(),
+			//premable.c_str(),
 			source.c_str()
 		};
 		GLint lengths[] = {
 			(GLint)version.length(),
-			(GLint)premable.length(),
+			//(GLint)premable.length(),
 			(GLint)source.length()
 		};
 
@@ -206,9 +206,9 @@ void ShaderSet::UpdatePrograms()
 			std::string log_s = log.data();
 
 			// replace all filename hashes in the error messages with actual filenames
-			for (size_t found_preamble; (found_preamble = log_s.find(preamble_hash)) != std::string::npos;) {
-				log_s.replace(found_preamble, preamble_hash.size(), "preamble");
-			}
+			//for (size_t found_preamble; (found_preamble = log_s.find(preamble_hash)) != std::string::npos;) {
+			//	log_s.replace(found_preamble, preamble_hash.size(), "preamble");
+			//}
 			for (size_t found_source; (found_source = log_s.find(source_hash)) != std::string::npos;) {
 				log_s.replace(found_source, source_hash.size(), shader->first.Name);
 			}
@@ -313,10 +313,10 @@ void ShaderSet::UpdatePrograms()
 	}
 }
 
-void ShaderSet::SetPreambleFile(const std::string& preambleFilename)
-{
-	SetPreamble(ShaderStringFromFile(preambleFilename.c_str()));
-}
+//void ShaderSet::SetPreambleFile(const std::string& preambleFilename)
+//{
+//	SetPreamble(ShaderStringFromFile(preambleFilename.c_str()));
+//}
 
 GLuint* ShaderSet::AddProgramFromExts(const std::vector<std::string>& shaders)
 {

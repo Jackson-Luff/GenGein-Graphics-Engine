@@ -6,15 +6,16 @@
 
 using C_LOG_TYPE = Console::LOG_TYPE;
 
-Texture2D::Texture2D()
-	: m_name("\0"), m_GLTexture(0), m_GLSlot(0), m_UniformLocation(0)
+Texture2D::Texture2D() :
+	m_name(std::string()), 
+	m_GLTexture(-1), m_GLSlot(-1), m_UniformLocation(-1)
 {}
 
-Texture2D::Texture2D(unsigned int a_programID, std::string a_name) : Texture2D()
+Texture2D::Texture2D(unsigned int* a_programID, std::string a_name) : Texture2D()
 {
 	// #NOTE: program mem copy could corrupt texture in shader program
 	m_name = a_name;
-	m_UniformLocation = glGetUniformLocation(a_programID, m_name.c_str());
+	m_UniformLocation = glGetUniformLocation(*a_programID, m_name.c_str());
 }
 
 Texture2D::~Texture2D()

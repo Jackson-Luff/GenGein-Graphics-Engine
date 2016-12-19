@@ -73,18 +73,18 @@ void FlyCam::HandleKeyboardInput(const double a_dt)
 
 	if (length(m_flyVelocity) > 0.0f)
 	{		
-		m_flyVelocity *= 0.99f;
+		m_flyVelocity *= 0.985f;
 
 		if (length(m_flyVelocity) > 7.5f)
 			m_flyVelocity = 7.5f * normalize(m_flyVelocity);
 
 		// Update apply velocity and speed relative to movement
-		const float hyperSpeed = 2.0f;
-		const float velStr = ((float)a_dt * m_currSpeed);
+		const float hyperSpeed = 8.0f;
+		float velStr = ((float)a_dt * m_currSpeed);
 		
 		// If(Left_Shift) HYYYPPPPEEERRRSPEEEDD BOISSS
 		if (Keyboard::isKeyDown(KEY_LEFT_SHIFT))
-			m_flyVelocity *= hyperSpeed;
+			velStr *= hyperSpeed;
 				
 		// Update render capture
 		SetPosition(GetPosition() + vec4(m_flyVelocity * velStr, 0.0));

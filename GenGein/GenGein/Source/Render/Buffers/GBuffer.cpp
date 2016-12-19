@@ -51,7 +51,7 @@ bool GBuffer::SetUp(const int a_wWidth, const int a_wHeight)
 	// Create the texture for positional information
 	glGenTextures(1, &m_gTextures[GTEXTURE_POSITION]);
 	glBindTexture(GL_TEXTURE_2D, m_gTextures[GTEXTURE_POSITION]);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_wWidth, m_wHeight, 0, GL_RGBA, GL_FLOAT, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, m_wWidth, m_wHeight, 0, GL_RGBA, GL_FLOAT, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_gTextures[GTEXTURE_POSITION], 0);
@@ -59,7 +59,7 @@ bool GBuffer::SetUp(const int a_wWidth, const int a_wHeight)
 	// Create the texture for normal information
 	glGenTextures(1, &m_gTextures[GTEXTURE_NORMAL]);
 	glBindTexture(GL_TEXTURE_2D, m_gTextures[GTEXTURE_NORMAL]);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_wWidth, m_wHeight, 0, GL_RGBA, GL_FLOAT, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, m_wWidth, m_wHeight, 0, GL_RGBA, GL_FLOAT, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, m_gTextures[GTEXTURE_NORMAL], 0);
@@ -67,7 +67,7 @@ bool GBuffer::SetUp(const int a_wWidth, const int a_wHeight)
 	// Create the texture for albedo information
 	glGenTextures(1, &m_gTextures[GTEXTURE_ALBEDO]);
 	glBindTexture(GL_TEXTURE_2D, m_gTextures[GTEXTURE_ALBEDO]);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_wWidth, m_wHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_wWidth, m_wHeight, 0, GL_RGBA, GL_FLOAT, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, m_gTextures[GTEXTURE_ALBEDO], 0);
@@ -79,7 +79,7 @@ bool GBuffer::SetUp(const int a_wWidth, const int a_wHeight)
 
 	// Create Depth Texture
 	glGenRenderbuffers(1, &m_depthTexture);
-	glBindRenderbuffer(GL_TEXTURE_2D, m_depthTexture);
+	glBindRenderbuffer(GL_RENDERBUFFER, m_depthTexture);
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, m_wWidth, m_wHeight);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_depthTexture);
 
@@ -114,33 +114,17 @@ void GBuffer::BindForWriting()
 
 void GBuffer::BindForReading()
 {
-	
 	glBindFramebuffer(GL_READ_FRAMEBUFFER, m_gBufferID);
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 
-	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	//glUseProgram(*m_programID);
-	//glActiveTexture(GL_TEXTURE0);
-	//glBindTexture(GL_TEXTURE_2D, m_gTextures[GTEXTURE_POSITION]);
-	//glActiveTexture(GL_TEXTURE1);
-	//glBindTexture(GL_TEXTURE_2D, m_gTextures[GTEXTURE_NORMAL]);
-	//glActiveTexture(GL_TEXTURE2);
-	//glBindTexture(GL_TEXTURE_2D, m_gTextures[GTEXTURE_ALBEDO]);	
-	
-	GLsizei HalfWidth = (GLsizei)(m_wWidth / 2.0f);
-	GLsizei HalfHeight = (GLsizei)(m_wHeight / 2.0f);
-	
-	glReadBuffer(GL_COLOR_ATTACHMENT0);
-	glBlitFramebuffer(0, 0, m_wWidth, m_wHeight,0, 0, HalfWidth, HalfHeight, GL_COLOR_BUFFER_BIT, GL_NEAREST);
-	
-	glReadBuffer(GL_COLOR_ATTACHMENT1);
-	glBlitFramebuffer(0, 0, m_wWidth, m_wHeight,0, HalfHeight, HalfWidth, m_wHeight, GL_COLOR_BUFFER_BIT, GL_NEAREST);
-	
-	glReadBuffer(GL_COLOR_ATTACHMENT2);
-	glBlitFramebuffer(0, 0, m_wWidth, m_wHeight,HalfWidth, HalfHeight, m_wWidth, m_wHeight, GL_COLOR_BUFFER_BIT, GL_NEAREST);
-	
-	glReadBuffer(GL_DEPTH_ATTACHMENT);
-	glBlitFramebuffer(0, 0, m_wWidth, m_wHeight, HalfWidth, 0, m_wWidth, HalfHeight, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
+	glUseProgram(*m_programID);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, m_gTextures[GTEXTURE_POSITION]);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, m_gTextures[GTEXTURE_NORMAL]);
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, m_gTextures[GTEXTURE_ALBEDO]);	
 
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
 }

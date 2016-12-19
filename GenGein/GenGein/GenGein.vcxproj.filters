@@ -28,6 +28,7 @@
     <ClCompile Include="Source\Render\Buffers\GBuffer.cpp" />
     <ClCompile Include="Source\Render\Buffers\CamUB.cpp" />
     <ClCompile Include="Source\Core\GL\GLWindow.cpp" />
+    <ClCompile Include="Source\Render\ShadowMap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\Time.h" />
@@ -51,5 +52,6 @@
     <ClInclude Include="Source\Render\Buffers\GBuffer.h" />
     <ClInclude Include="Source\Render\Buffers\CamUB.h" />
     <ClInclude Include="Source\Core\GL\GLWindow.h" />
+    <ClInclude Include="Source\Render\ShadowMap.h" />
   </ItemGroup>
 </Project>

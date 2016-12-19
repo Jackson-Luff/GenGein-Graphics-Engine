@@ -45,7 +45,7 @@ class ShaderSet
 	// the version in the version string that gets prepended to each shader
 	std::string mVersion;
 	// the preamble which gets prepended to each shader (for eg. shared binding conventions)
-	std::string mPreamble;
+	//std::string mPreamble;
 	// maps shader name/types to handles, in order to reuse shared shaders.
 	std::map<ShaderNameTypePair, Shader> mShaders;
 	// allows looking up the program that represents a linked set of shaders
@@ -63,7 +63,7 @@ public:
 
 	// A string that gets prepended to every shader that gets compiled
 	// Useful for compile-time constant #defines (like attrib locations)
-	void SetPreamble(const std::string& preamble);
+	//void SetPreamble(const std::string& preamble);
 
 	// Convenience for reading the preamble from a file
 	// The preamble is NOT auto-reloaded.
