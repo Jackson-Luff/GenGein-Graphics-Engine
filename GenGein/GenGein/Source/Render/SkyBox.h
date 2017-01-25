@@ -11,7 +11,7 @@ class SkyBox
 {
 public:
 
-	enum class SkyType : char
+	enum class SkyTheme : char
 	{
 		SKY,
 		SPACE,
@@ -28,10 +28,10 @@ public:
 	};
 
 	SkyBox();
-	SkyBox(const unsigned int* a_program);
+	SkyBox(const unsigned int*);
 	~SkyBox();
 
-	void Create(const SkyType a_presetType);
+	void Create(const SkyTheme);
 	void Render();
 
 private:

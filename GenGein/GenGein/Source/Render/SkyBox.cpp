@@ -12,9 +12,9 @@
 
 #include "Skybox.h"
 
-using C_LOG_TYPE = Console::LOG_TYPE;
+using SkyTheme = SkyBox::SkyTheme;
 
-std::vector<std::string> GetSmartDirectories(const SkyBox::SkyType a_presetType)
+std::vector<std::string> GetSmartDirectories(const SkyTheme a_presetType)
 {
 	std::string skyDir = "_Resources/Textures/SkyBoxes";
 	std::string fileType = ".tga";
@@ -29,19 +29,19 @@ std::vector<std::string> GetSmartDirectories(const SkyBox::SkyType a_presetType)
 	//Setup Sea Directory
 	switch (a_presetType)
 	{
-	case SkyBox::SkyType::SKY:				skyDir.append("/Sky/");				 fileType = ".jpg"; break;
-	case SkyBox::SkyType::SPACE:			skyDir.append("/Space/");			 fileType = ".jpg"; break;
-	case SkyBox::SkyType::CHAPEL:			skyDir.append("/Chapel/");			 fileType = ".jpg"; break;
-	case SkyBox::SkyType::GOLDRUSH:			skyDir.append("/Goldrush/");		 fileType = ".tga"; break;
-	case SkyBox::SkyType::FROZEN:			skyDir.append("/Frozen/");			 fileType = ".tga"; break;
-	case SkyBox::SkyType::MORNING:			skyDir.append("/Morning/");			 fileType = ".tga"; break;
-	case SkyBox::SkyType::SUNSET:			skyDir.append("/SunSet/");			 fileType = ".png";	break;
-	case SkyBox::SkyType::DARKSTORMY:		skyDir.append("/DarkStormy/");		 fileType = ".png"; break;
-	case SkyBox::SkyType::TROPICALSUNNY:	skyDir.append("/TropicalSunny/");	 fileType = ".png"; break;
-	case SkyBox::SkyType::CLOUDYLIGHTRAYS:	skyDir.append("/CloudyLightRays/");  fileType = ".png"; break;
-	case SkyBox::SkyType::THICKCLOUDSWATER:	skyDir.append("/ThickCloudsWater/"); fileType = ".png"; break;
+	case SkyTheme::SKY:				skyDir.append("/Sky/");				 fileType = ".jpg"; break;
+	case SkyTheme::SPACE:			skyDir.append("/Space/");			 fileType = ".jpg"; break;
+	case SkyTheme::CHAPEL:			skyDir.append("/Chapel/");			 fileType = ".jpg"; break;
+	case SkyTheme::GOLDRUSH:			skyDir.append("/Goldrush/");		 fileType = ".tga"; break;
+	case SkyTheme::FROZEN:			skyDir.append("/Frozen/");			 fileType = ".tga"; break;
+	case SkyTheme::MORNING:			skyDir.append("/Morning/");			 fileType = ".tga"; break;
+	case SkyTheme::SUNSET:			skyDir.append("/SunSet/");			 fileType = ".png";	break;
+	case SkyTheme::DARKSTORMY:		skyDir.append("/DarkStormy/");		 fileType = ".png"; break;
+	case SkyTheme::TROPICALSUNNY:	skyDir.append("/TropicalSunny/");	 fileType = ".png"; break;
+	case SkyTheme::CLOUDYLIGHTRAYS:	skyDir.append("/CloudyLightRays/");  fileType = ".png"; break;
+	case SkyTheme::THICKCLOUDSWATER:	skyDir.append("/ThickCloudsWater/"); fileType = ".png"; break;
 	default:
-		Console::Log(C_LOG_TYPE::LOG_ERROR, "No such directory %s.\n", skyDir.c_str());
+		Console::Log(Console::FBACK::LOG_ERROR, "No such directory %s.\n", skyDir.c_str());
 		break;
 	}
 
@@ -68,17 +68,17 @@ SkyBox::~SkyBox()
 	delete m_pTextureCube;
 }
 
-void SkyBox::Create(const SkyType a_presetType)
+void SkyBox::Create(const SkyTheme a_presetType)
 {
 	std::vector<std::string> directories = GetSmartDirectories(a_presetType);
 
 	m_pShape = new Shape();
-	m_pShape->Create(Shape::CUBE);
+	m_pShape->Create(Shape::Geometry::CUBE);
 
 	m_pTextureCube = new TextureCube(m_pSkyShader, "SkyBox");
 	m_pTextureCube->AddUniqueTextures(directories, GL_TEXTURE0);
 
-	Console::Log(C_LOG_TYPE::LOG_SUCCESS, "Skybox Loaded Successfully. \n");
+	Console::Log(Console::FBACK::LOG_SUCCESS, "Skybox Loaded Successfully. \n");
 }
 
 void SkyBox::Render()

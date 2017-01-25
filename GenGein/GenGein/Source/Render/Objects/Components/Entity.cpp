@@ -40,6 +40,7 @@ Entity::~Entity()
 {
 }
 
+//#NOTE FIND BETTER NAME FOR THIS!
 void Entity::Update()
 {
 	//Update the uniform buffer for the local matrix

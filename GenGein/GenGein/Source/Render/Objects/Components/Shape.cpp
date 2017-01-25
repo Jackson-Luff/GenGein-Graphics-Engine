@@ -7,8 +7,6 @@
 #include "Input\Console\Console.h"
 #include "Shape.h"
 
-using C_LOG_TYPE = Console::LOG_TYPE;
-
 using namespace glm;
 
 Shape::Shape()
@@ -20,7 +18,7 @@ Shape::~Shape()
 	glDeleteBuffers(1, &m_bufferInfo.m_VBO);
 }
 
-void Shape::Create(const ShapeType a_type)
+void Shape::Create(const Geometry a_type)
 {
 	m_shapeType = a_type;
 
@@ -83,7 +81,7 @@ void Shape::CreateShapeProperties(
 
 	switch (m_shapeType)
 	{
-	case Shape::PLANE:
+	case Geometry::PLANE:
 		// Front
 		a_verts.push_back({ vec3(-1.0, -1.0, +0.0), vec3(+0.0, +0.0, +1.0), vec2(0.0, 0.0) });
 		a_verts.push_back({ vec3(+1.0, -1.0, +0.0), vec3(+0.0, +0.0, +1.0), vec2(1.0, 0.0) });
@@ -93,7 +91,7 @@ void Shape::CreateShapeProperties(
 		a_indices = { 0, 1, 2, 0, 2, 3 };
 
 		break;
-	case Shape::CUBE:
+	case Geometry::CUBE:
 		// Front
 		a_verts.push_back({ vec3(-mid, -mid, +mid), vec3(-1.0, -1.0, +1.0), vec2() });
 		a_verts.push_back({ vec3(+mid, -mid, +mid), vec3(+1.0, -1.0, +1.0), vec2() });
@@ -126,21 +124,21 @@ void Shape::CreateShapeProperties(
 		a_verts.push_back({ vec3(-mid, -mid, +mid), vec3(-1.0, -1.0, +1.0), vec2() });
 
 		a_indices = {
-			 0,	 1,  2,  0,  2,  3, //front
+			 0,	 2,  1,  3,  2,  0, //front
 			 4,	 5,  6,  4,  6,  7, //right
 			 8,	 9, 10,  8, 10, 11, //back
-			12, 13, 14, 12, 14, 15, //left
+			12, 14, 13, 12, 15, 14, //left
 			16, 17, 18, 16, 18, 19, //upper
-			20, 21, 22, 20, 22, 23  //bottom
+			20, 22, 21, 20, 23, 22  //bottom
 		};
 
 		break;
-	case Shape::SPHERE:
+	case Geometry::SPHERE:
 		break;
 	default:
 		a_verts.push_back( {vec3(), vec3(), vec2() } );
 		a_indices = { 0 };
-		Console::Log(C_LOG_TYPE::LOG_ERROR, "Invalid shape type\n");
+		Console::Log(Console::FBACK::LOG_ERROR, "Invalid shape type\n");
 		break;
 	}
 }

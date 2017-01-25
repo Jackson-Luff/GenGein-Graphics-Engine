@@ -6,38 +6,40 @@ class GBuffer
 {
 public:
 
-	enum GBUFFER_TEXTURE_TYPE 
+	enum GBUFFER_TEXTURE_TYPE : unsigned int
 	{
 		GTEXTURE_POSITION,
 		GTEXTURE_NORMAL,
 		GTEXTURE_ALBEDO,
+		GTEXTURE_COMP,
 		GTEXTURES_NUM
 	};
 
 	//
-	GBuffer(unsigned int* a_programID);
+	GBuffer();
+	GBuffer(const unsigned int*);
 	~GBuffer();
 
 	//
-	bool SetUp(const int a_wWidth, const int a_wHeight);
+	bool SetUp(const int, const int);
+	//
 	void Render();
 
 	//
 	void BindForWriting();
 	void BindForReading();
-private:
 
-	Shape* m_postQuad;
+	//protected, for now.
+protected:
 
 	//
-	unsigned int* m_programID;
+	Shape* m_postQuad;
+	//
+	const unsigned int* m_pGBuffProgID;
 	//
 	unsigned int m_gBufferID;
 	//
-	unsigned int m_gTextures[GTEXTURES_NUM];
+	unsigned int m_gTextures[GBUFFER_TEXTURE_TYPE::GTEXTURES_NUM];
 	//
 	unsigned int m_depthTexture;
-
-	// Stored window dimensions
-	int m_wWidth, m_wHeight;
 };

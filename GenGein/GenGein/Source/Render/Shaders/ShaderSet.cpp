@@ -18,7 +18,7 @@
 
 #include "Input\Console\Console.h"
 
-using C_LOG_TYPE = Console::LOG_TYPE;
+using C_FBACK = Console::FBACK;
 
 static uint64_t GetShaderFileTimestamp(const char* filename)
 {
@@ -51,9 +51,9 @@ static uint64_t GetShaderFileTimestamp(const char* filename)
 		{ 
 			int err = GetLastError();
 			if (err == ERROR_FILE_NOT_FOUND)
-				Console::Log(C_LOG_TYPE::LOG_ERROR, "File not found: \n", filename);
+				Console::Log(C_FBACK::LOG_ERROR, "File not found: \n", filename);
 			else if (err == ERROR_PATH_NOT_FOUND)
-				Console::Log(C_LOG_TYPE::LOG_ERROR, "Path is invalid: \n", filename);
+				Console::Log(C_FBACK::LOG_ERROR, "Path is invalid: \n", filename);
 			
 		}
 	}
@@ -212,8 +212,8 @@ void ShaderSet::UpdatePrograms()
 			for (size_t found_source; (found_source = log_s.find(source_hash)) != std::string::npos;) {
 				log_s.replace(found_source, source_hash.size(), shader->first.Name);
 			}
-			Console::Log(C_LOG_TYPE::LOG_ERROR, "Error compiling %s, \n", shader->first.Name.c_str());
-			Console::Log(C_LOG_TYPE::LOG_ERROR, "Log: %s, \n", log_s.c_str());
+			Console::Log(C_FBACK::LOG_ERROR, "Error compiling %s, \n", shader->first.Name.c_str());
+			Console::Log(C_FBACK::LOG_ERROR, "Log: %s, \n", log_s.c_str());
 		}
 	}
 
@@ -280,11 +280,11 @@ void ShaderSet::UpdatePrograms()
 			glGetProgramiv(program.second.InternalHandle, GL_LINK_STATUS, &status);
 			
 			std::string msg;
-			C_LOG_TYPE log_type;
+			C_FBACK log_type;
 			if (!status)
-				log_type = C_LOG_TYPE::LOG_ERROR;
+				log_type = C_FBACK::LOG_ERROR;
 			else
-				log_type = C_LOG_TYPE::LOG_SUCCESS;
+				log_type = C_FBACK::LOG_SUCCESS;
 
 			msg = "Linking program (";
 
@@ -323,13 +323,17 @@ GLuint* ShaderSet::AddProgramFromExts(const std::vector<std::string>& shaders)
 	std::vector<std::pair<std::string, GLenum>> typedShaders;
 	for (const std::string& shader : shaders)
 	{
-		size_t extLoc = shader.find_last_of('.');
+		// Pre-define the shader directory
+		const std::string predef = std::string("_Resources/Shaders/");
+		const std::string shaderPath = predef + shader;
+
+		size_t extLoc = shaderPath.find_last_of('.');
 		if (extLoc == std::string::npos)
 			return nullptr;
 
 		GLenum shaderType;
+		std::string ext = shaderPath.substr(extLoc + 1);
 
-		std::string ext = shader.substr(extLoc + 1);
 		if (ext == "vert")
 			shaderType = GL_VERTEX_SHADER;
 		else if (ext == "frag")
@@ -345,7 +349,7 @@ GLuint* ShaderSet::AddProgramFromExts(const std::vector<std::string>& shaders)
 		else
 			return nullptr;
 
-		typedShaders.emplace_back(shader, shaderType);
+		typedShaders.emplace_back(shaderPath, shaderType);
 	}
 
 	return AddProgram(typedShaders);

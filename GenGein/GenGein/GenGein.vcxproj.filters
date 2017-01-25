@@ -28,7 +28,8 @@
     <ClCompile Include="Source\Render\Buffers\GBuffer.cpp" />
     <ClCompile Include="Source\Render\Buffers\CamUB.cpp" />
     <ClCompile Include="Source\Core\GL\GLWindow.cpp" />
-    <ClCompile Include="Source\Render\ShadowMap.cpp" />
+    <ClCompile Include="Source\Render\VFX\Light.cpp" />
+    <ClCompile Include="Source\Render\Buffers\PostProcess.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\Time.h" />
@@ -52,6 +53,7 @@
     <ClInclude Include="Source\Render\Buffers\GBuffer.h" />
     <ClInclude Include="Source\Render\Buffers\CamUB.h" />
     <ClInclude Include="Source\Core\GL\GLWindow.h" />
-    <ClInclude Include="Source\Render\ShadowMap.h" />
+    <ClInclude Include="Source\Render\VFX\Light.h" />
+    <ClInclude Include="Source\Render\Buffers\PostProcess.h" />
   </ItemGroup>
 </Project>

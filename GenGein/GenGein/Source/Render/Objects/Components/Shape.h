@@ -6,7 +6,7 @@ class Shape
 {
 public:
 
-	enum ShapeType : char
+	enum class Geometry : char
 	{
 		PLANE,
 		CUBE,
@@ -16,7 +16,7 @@ public:
 	Shape();
 	~Shape();
 
-	void Create(const ShapeType a_type);
+	void Create(const Geometry);
 	void Render();
 
 	struct VertexProperty
@@ -38,9 +38,9 @@ private:
 
 	//
 	void CreateShapeProperties(
-		std::vector<VertexProperty>& a_verts,
-		std::vector<unsigned int>& a_indices);
+		std::vector<VertexProperty>&,
+		std::vector<unsigned int>&);
 	
-	ShapeType m_shapeType;
+	Geometry m_shapeType;
 	BufferProperties m_bufferInfo;
 };

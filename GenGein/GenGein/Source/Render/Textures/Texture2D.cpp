@@ -4,7 +4,7 @@
 #include "Input\Console\Console.h"
 #include "Texture2D.h"
 
-using C_LOG_TYPE = Console::LOG_TYPE;
+using C_FBACK = Console::FBACK;
 
 Texture2D::Texture2D() :
 	m_name(std::string()), 
@@ -32,7 +32,7 @@ void Texture2D::Setup(std::string a_directory, unsigned int a_gl_textureSlot)
 	unsigned char* data = stbi_load(path, &imgWidth, &imgHeight, &imgFormat, STBI_default);
 
 	if (data == NULL)
-		return Console::Log(C_LOG_TYPE::LOG_WARNING, "Missing texture at: %s\n", path);
+		return Console::Log(C_FBACK::LOG_WARNING, "Missing texture at: %s\n", path);
 
 	imgFormat == 1 ? imgFormat = GL_RED  :
 	imgFormat == 2 ? imgFormat = GL_RG   :
@@ -50,7 +50,7 @@ void Texture2D::Setup(std::string a_directory, unsigned int a_gl_textureSlot)
 
 	stbi_image_free(data);
 
-	Console::Log(C_LOG_TYPE::LOG_SUCCESS, "%s Texture Loaded.\n", m_name.c_str());
+	Console::Log(C_FBACK::LOG_SUCCESS, "%s Texture Loaded.\n", m_name.c_str());
 }
 
 void Texture2D::Shutdown()

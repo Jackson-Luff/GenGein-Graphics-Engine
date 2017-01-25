@@ -4,8 +4,6 @@
 #include "Input\Console\Console.h"
 #include "TextureCube.h"
 
-using C_LOG_TYPE = Console::LOG_TYPE;
-
 TextureCube::TextureCube()
 	: m_name("\n"), m_GLTexture(-1), m_GLSlot(-1), m_UniformLocation(-1)
 {}
@@ -46,7 +44,7 @@ void TextureCube::AddUniqueTextures(std::vector<std::string> a_skyPath, unsigned
 
 		if (data == NULL)
 		{
-			Console::Log(C_LOG_TYPE::LOG_WARNING, "Missing texture at: %s\n", path);
+			Console::Log(Console::FBACK::LOG_WARNING, "Missing texture at: %s\n", path);
 			continue;
 		}
 

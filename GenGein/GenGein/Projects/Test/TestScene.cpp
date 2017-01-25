@@ -1,3 +1,5 @@
+#include "TestScene.h"
+
 #include "Core\Time.h"
 #include "Core\GL\GLWindow.h"
 
@@ -8,35 +10,31 @@
 #include "Render\Buffers\GBuffer.h"
 #include "Render\Buffers\CamUB.h"
 #include "Render\SkyBox.h"
-#include "Render\Textures\Texture2D.h"
-
-#include "TestScene.h"
-
-using C_LOG_TYPE = Console::LOG_TYPE;
 
 TestScene::TestScene() : BaseApp()
 {
-	Console::Log(C_LOG_TYPE::LOG_WARNING, "Remember to remove TestScene\n");
+	Console::Log(Console::FBACK::LOG_WARNING, "Remember to remove TestScene\n");
 }
 
 TestScene::~TestScene()
 {
 	delete m_pCamUB;
 	delete m_pGBuffer;
-	delete m_pMonkeyMesh;
-	delete m_pGroundMesh;
+	delete m_pRuinsMesh;
 	delete m_pShaders;
 	delete m_pSkyBox;
 }
 
 void TestScene::StartUp(const int a_width, const int a_height, const char* a_title, bool a_fullscreen)
 {
+	// #NOTE: Clean this it's flithy
+
 	////////////// SET UP BaseApp Prerequisites////////////////////////////////////
 	//
 	// Init base
 	BaseApp::StartUp(a_width, a_height, a_title, a_fullscreen);
 	// Init camera
-	m_pBaseCam = new FlyCam(glm::vec3(10, 0, 5), glm::vec3(0), 0.15f, 0.2f);
+	m_pBaseCam = new FlyCam(glm::vec3(0, 10, 10), glm::vec3(0), 0.30f, 0.2f);
 	//
 	///////////////////////////////////////////////////////////////////////////////
 
@@ -45,49 +43,44 @@ void TestScene::StartUp(const int a_width, const int a_height, const char* a_tit
 
 	m_pShaders = new ShaderSet();
 
-	unsigned int* pSkyBox = m_pShaders->AddProgramFromExts({
-		"_Resources/Shaders/Skybox/Skybox.vert",
-		"_Resources/Shaders/Skybox/Skybox.frag"
-	});
-	unsigned int* pGBuffer = m_pShaders->AddProgramFromExts({
-		"_Resources/Shaders/Test/GBuffer.vert",
-		"_Resources/Shaders/Test/GBuffer.frag"
-	});
-	unsigned int* pGPost = m_pShaders->AddProgramFromExts({
-		"_Resources/Shaders/Test/PostQuad.vert",
-		"_Resources/Shaders/Test/PostQuad.frag"
-	});
+	// --------------------- SKYBOX SHADER(S) --------------------------
+
+	unsigned int* pSkyBox		= m_pShaders->AddProgramFromExts({
+		"Skybox/Skybox.vert", "Skybox/Skybox.frag"	});
+
+	// --------------------- OBJECT SHADER(S) --------------------------
+
+	unsigned int* pGB_TestObj	= m_pShaders->AddProgramFromExts({
+		"Test/GB_Object.vert", "Test/GB_Object.frag" });
+
+	// --------------------- GBUFFER SHADER(S) --------------------------
+
+	unsigned int* pGB_Comp		= m_pShaders->AddProgramFromExts({
+		"Test/GB_Composite.vert", "Test/GB_Composite.frag"	});
+
+	unsigned int* pPostProcess	= m_pShaders->AddProgramFromExts({
+		"Test/PostProcess.vert", "Test/PostProcess.frag" });
 
 	// Set version of shaders
 	m_pShaders->SetVersion("450");
 	//Set preamble to program AFTER 'version' definition 
 	m_pShaders->UpdatePrograms();
 	
+	// 
+	m_pSkyBox = new SkyBox(pSkyBox);
+	m_pSkyBox->Create(SkyBox::SkyTheme::MORNING);
+
+	// no normals == no mesh #TODO: CalcNormals() if none
+	m_pRuinsMesh = new OCMesh(pGB_TestObj, glm::vec4(1));
+	m_pRuinsMesh->Load("_Resources/Objects/Scene/Ruins.obj", "_Resources/Objects/");
+
+	//
+	m_pGBuffer = new GBuffer(pGB_Comp);
+	m_pGBuffer->SetUp(winWidth, winHeight);
+
 	//
 	m_pCamUB = new CamUB();
 	m_pCamUB->SetUp(m_pBaseCam->GetWorldTrans(), m_pBaseCam->GetProjTrans(), m_pBaseCam->GetViewTrans());
-
-	//
-	m_pGBuffer = new GBuffer(pGPost);
-	m_pGBuffer->SetUp(winWidth, winHeight);
-
-	// 
-	m_pSkyBox = new SkyBox(pSkyBox);
-	m_pSkyBox->Create(SkyBox::SkyType::MORNING);
-
-	// no normals == no mesh #TODO: CalcNormals() if none
-	m_pGroundMesh = new OCMesh(pGBuffer, glm::vec4(0, -2, 0, 1));
-	m_pGroundMesh->Load("_Resources/Objects/ground.obj", "_Resources/Objects/");
-
-	for (int i = 0; i < 9; i++)
-	{
-		int r = (i / 3) * 10 - 10;
-		int c = (i % 3) * 10 - 10;
-		m_pGroundMesh->AddInstance(glm::vec4(r, -2, c, 1));
-	}
-	m_pGroundMesh->AddInstance(glm::vec4(0, 2, 0, 1));
-	m_pMonkeyMesh = new OCMesh(pGBuffer);
-	m_pMonkeyMesh->Load("_Resources/Objects/monkey.obj", "_Resources/Objects/");
 }
 
 void TestScene::ShutDown()
@@ -100,7 +93,7 @@ void TestScene::Update(const double a_dt)
 	// Update GPU with Camera Updates:
 	m_pCamUB->Update();
 
-	m_pMonkeyMesh->AddRotation( (float)a_dt/50.0f, glm::vec3(0, 1, 0) );
+	//m_pMonkeyMesh->AddRotation( (float)a_dt/50.0f, glm::vec3(0, 1, 0) );
 }
 
 void TestScene::Render()
@@ -109,13 +102,14 @@ void TestScene::Render()
 	m_pShaders->UpdatePrograms();
 
 	m_pGBuffer->BindForWriting();
+	
 	m_pGLWindow->ClearBuffers();
 	
 	m_pSkyBox->Render();
-
-	m_pMonkeyMesh->Render();
-	m_pGroundMesh->Render();
+	m_pRuinsMesh->Render();
 	
 	m_pGBuffer->BindForReading();
+	m_pGLWindow->ClearBuffers();
+
 	m_pGBuffer->Render();
 }

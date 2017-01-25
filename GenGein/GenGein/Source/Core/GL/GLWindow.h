@@ -29,15 +29,19 @@ public:
 	// Consults GLFW for should close
 	bool ShouldShutDown();
 
-	
 	// Enable Depth Testing
-	void EnableDepthTest(bool a_enable);
+	void EnableDepthTest(bool);
 	// Transparent handle
-	void EnableOneMinusAlphaBlend(bool a_enable);
+	void EnableOneMinusAlphaBlend(bool);
+	// Enables back-face culling 
+	void EnableBackFaceCulling(bool);
+	// Enables front-face culling
+	void EnableFrontFaceCulling(bool);
 	// Enables/Disables VSYNC
 	void EnableVSync(bool);
 	// Enables Fullscreen
 	void EnableFullscreen(bool);
+
 	// Select Monitor to use
 	void SelectMonitor(MONITOR_ID);
 

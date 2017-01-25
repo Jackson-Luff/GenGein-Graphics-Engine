@@ -82,21 +82,21 @@ void Console::PrintMatrix4x4(glm::mat4& a_mat4ToPrint, const char* a_desc)
 	return;
 }
 
-void Console::Log(const LOG_TYPE a_logColour, const char* a_log, const char* a_ext)
+void Console::Log(const FBACK a_logColour, const char* a_log, const char* a_ext)
 {
 	const char tag = a_log[1];
 	
 	// Although messy and inefficient, it's effective
 	// #TODO: refine this method. It's gross
-	if (a_logColour == LOG_TYPE::LOG_DEFAULT	||
-		a_logColour == LOG_TYPE::LOG_ERROR		||
-		a_logColour == LOG_TYPE::LOG_SUCCESS	||
-		a_logColour == LOG_TYPE::LOG_WARNING	)
+	if (a_logColour == FBACK::LOG_DEFAULT	||
+		a_logColour == FBACK::LOG_ERROR		||
+		a_logColour == FBACK::LOG_SUCCESS	||
+		a_logColour == FBACK::LOG_WARNING	)
 	{
 		SetConsoleTextAttribute(hndl, a_logColour);
 		printf(a_log, a_ext);
-		SetConsoleTextAttribute(hndl, Console::LOG_DEFAULT);
+		SetConsoleTextAttribute(hndl, FBACK::LOG_DEFAULT);
 	}
-	else Console::Log(LOG_TYPE::LOG_ERROR,
+	else Console::Log(FBACK::LOG_ERROR,
 		"Log Attempt invalid, colouring out of range for: %s", a_log);
 }

@@ -3,7 +3,7 @@
 #include "Input\Console\Console.h"
 #include "GLwindow.h"
 
-using C_LOG_TYPE = Console::LOG_TYPE;
+using C_FBACK = Console::FBACK;
 
 void error_callback(int a_error, const char* a_description)
 {
@@ -25,9 +25,9 @@ void GLwindow::SetUp(const int a_width, const int a_height, const char* a_title,
 	m_windowHeight = a_height;
 
 	if (InitGLWindow(a_width, a_height, a_title, a_fullscreen))
-		Console::Log(C_LOG_TYPE::LOG_SUCCESS, "Window Build Complete!\n");
+		Console::Log(C_FBACK::LOG_SUCCESS, "Window Build Complete!\n");
 	else
-		return Console::Log(C_LOG_TYPE::LOG_ERROR, "Window Build Failed!\n");
+		return Console::Log(C_FBACK::LOG_ERROR, "Window Build Failed!\n");
 }
 
 void GLwindow::CleanUp()
@@ -41,7 +41,7 @@ void GLwindow::SetWindowColour(const float a_R, const float a_G, const float a_B
 	if ((a_R < 0 || a_R > 1) ||
 		(a_G < 0 || a_G > 1) ||
 		(a_B < 0 || a_B > 1))
-		Console::Log(C_LOG_TYPE::LOG_WARNING, "window colour exceeds GL units.\n");
+		Console::Log(C_FBACK::LOG_WARNING, "window colour exceeds GL units.\n");
 
 	glClearColor(a_R, a_G, a_B, 0.0f);
 }
@@ -86,23 +86,30 @@ bool GLwindow::ShouldShutDown()
 
 void GLwindow::EnableDepthTest(bool a_enable)
 {
-	if (a_enable)
-		glEnable(GL_DEPTH_TEST);
-	else
-		glDisable(GL_DEPTH_TEST);
+	a_enable == true ? glEnable(GL_DEPTH_TEST) : glDisable(GL_DEPTH_TEST);
 
 	glDepthFunc(GL_LEQUAL);
 }
 
+// #NOTE: GAH VERY VAGE AND WAY TOO SPECIFIC [make generic]
 void GLwindow::EnableOneMinusAlphaBlend(bool a_enable)
 {
-	if (a_enable)
-		glEnable(GL_BLEND);
-	else
-		glDisable(GL_BLEND);
+	a_enable == true ? glEnable(GL_BLEND) : glDisable(GL_BLEND);
 
 	glBlendEquation(GL_FUNC_ADD);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+}
+
+void GLwindow::EnableBackFaceCulling(bool a_enable)
+{
+	a_enable == true ? glEnable(GL_CULL_FACE) : glDisable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+}
+
+void GLwindow::EnableFrontFaceCulling(bool a_enable)
+{
+	a_enable == true ? glEnable(GL_CULL_FACE) : glDisable(GL_CULL_FACE);
+	glCullFace(GL_FRONT);
 }
 
 void GLwindow::EnableVSync(bool a_sync)

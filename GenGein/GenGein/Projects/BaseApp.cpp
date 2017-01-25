@@ -31,6 +31,7 @@ void BaseApp::StartUp(const int a_width, const int a_height, const char* a_title
 	m_pGLWindow->EnableVSync(true);
 	m_pGLWindow->EnableDepthTest(true);
 	m_pGLWindow->EnableOneMinusAlphaBlend(true);	
+	m_pGLWindow->EnableBackFaceCulling(true);
 }
 
 void BaseApp::ShutDown()

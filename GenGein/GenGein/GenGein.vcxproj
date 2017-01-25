@@ -103,6 +103,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)\Middleware\GLFW\x86\lib-vc2015;$(ProjectDir)\Middleware\FBXLoader\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
     </Link>
     <CustomBuildStep>
       <Command>
@@ -214,8 +216,9 @@
     </BuildLog>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Source\Render\ShadowMap.h" />
+    <ClInclude Include="Source\Render\Buffers\PostProcess.h" />
     <ClInclude Include="Source\Render\Buffers\GBuffer.h" />
+    <ClInclude Include="Source\Render\VFX\Light.h" />
     <ClInclude Include="Source\Render\Objects\Components\Entity.h" />
     <ClInclude Include="Projects\BaseApp.h" />
     <ClInclude Include="Projects\Test\TestScene.h" />
@@ -238,8 +241,9 @@
     <ClInclude Include="Source\Render\Buffers\CamUB.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Render\ShadowMap.cpp" />
+    <ClCompile Include="Source\Render\Buffers\PostProcess.cpp" />
     <ClCompile Include="Source\Render\Buffers\GBuffer.cpp" />
+    <ClCompile Include="Source\Render\VFX\Light.cpp" />
     <ClCompile Include="Source\Render\Objects\Components\Entity.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Middleware\tinyOBJ\tinyOBJ\tiny_obj_loader.cc" />

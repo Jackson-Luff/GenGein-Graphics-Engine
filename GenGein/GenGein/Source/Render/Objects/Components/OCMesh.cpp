@@ -1,18 +1,20 @@
+#include "OCMesh.h"
+
+#include <fstream>
+
 // Dependancy includes
 #include "tinyOBJ\tiny_obj_loader.h"
-
 #include "glm\glm.hpp"
-#include "gl_core_4_4.h"
 
 // Engine includes
+#include "gl_core_4_4.h"
 #include "Input\Console\Console.h"
-#include "OCMesh.h"
+
 
 using namespace glm;
 
 using Shape_t =  std::vector<tinyobj::shape_t>;
 using Material_t =  std::vector<tinyobj::material_t>;
-using C_LOG_TYPE = Console::LOG_TYPE;
 
 OCMesh::OCMesh() : Entity()
 {}
@@ -81,18 +83,25 @@ float* Calc_Tangents_BiNormals_Normals(tinyobj::mesh_t& a_m)
 
 bool OCMesh::Load(const char* a_filename, const char* a_baseDir)
 {
+	bool res = false;
 	std::string err;
 	Shape_t shapes;
 	Material_t materials;
+	std::map<std::string, int> mMap;
 
-	bool ret = tinyobj::LoadObj(shapes, materials, err, a_filename, a_baseDir);
-	
+	std::string dir("_Resources/Objects/Scene/Ruins.mtl");
+
+	std::ifstream is(dir, std::ifstream::binary);
+
+	res = tinyobj::LoadObj(shapes, materials, err, a_filename, a_baseDir);
+	tinyobj::LoadMtl(mMap, materials, is);
+
 	if (!err.empty()) {
-		Console::Log(C_LOG_TYPE::LOG_WARNING, "%s \n", err.c_str() );
+		Console::Log(Console::FBACK::LOG_WARNING, "%s \n", err.c_str() );
 	}
 
-	if (!ret) {
-		Console::Log(C_LOG_TYPE::LOG_ERROR, "%s \n","FAILED TO LOAD/PARSE .OBJ\n");
+	if (!res) {
+		Console::Log(Console::FBACK::LOG_ERROR, "%s \n","FAILED TO LOAD/PARSE .OBJ\n");
 		return false;
 	}
 
@@ -105,11 +114,12 @@ void OCMesh::Render()
 {
 	glUseProgram(*m_programID);
 	
-
 	for (glm::vec4 inst : m_instances)
 	{
 		Entity::Update();
+
 		SetPosition(inst);
+		
 		for (VertexBufferInfo& buffer : vertexBufferList)
 		{
 			glBindVertexArray(buffer.m_VAO);

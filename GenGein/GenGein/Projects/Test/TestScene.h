@@ -7,6 +7,8 @@ class GBuffer;
 class ShaderSet;
 class CamUB;
 class OCMesh;
+class ShadowFBO;
+
 // WARNING: TEMP!
 
 class TestScene : public BaseApp
@@ -20,10 +22,9 @@ public:
 	virtual void Update(const double);
 	virtual void Render();
 private:
-	CamUB* m_pCamUB;
-	SkyBox* m_pSkyBox;
-	GBuffer* m_pGBuffer;
-	ShaderSet* m_pShaders;
-	OCMesh* m_pGroundMesh;
-	OCMesh* m_pMonkeyMesh;
+	CamUB*		 m_pCamUB;
+	SkyBox*		 m_pSkyBox;
+	GBuffer*	 m_pGBuffer;
+	ShaderSet*	 m_pShaders;
+	OCMesh*		 m_pRuinsMesh;
 };
